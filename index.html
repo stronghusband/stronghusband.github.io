@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-常见注释" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/" class="article-date">
+  <time class="dt-published" datetime="2026-02-28T14:17:10.000Z" itemprop="datePublished">2026-02-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/">常见注释</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="RestController"><a href="#RestController" class="headerlink" title="@RestController"></a>@RestController</h2><p>作用：这是一个组合注解，相当于@Controller + @ResponseBody<br>用途：用于标记一个类为 REST 风格的控制器，该类中的所有方法返回的数据（如字符串、对象等）会自动被序列化为 JSON（或 XML 等格式），并直接写入 HTTP 响应体中，而不是返回视图名称（如 JSP 页面）。</p>
+<h2 id="Bean"><a href="#Bean" class="headerlink" title="@Bean"></a>@Bean</h2><p>主要作用是告诉 Spring 容器：“这个方法返回的对象，请把它作为一个 Bean（组件）管理起来，放入 Spring 的 IOC 容器中。<br>通常，我们使用 @Component、@Service、@Controller 等注解让 Spring 自动扫描并注册类。但是，当你无法修改源代码（例如第三方库的类），或者需要自定义复杂的初始化逻辑时，就需要使用 @Bean</p>
+<ul>
+<li>| 特性       | <code>@Component</code> (及衍生注解)      | <code>@Bean</code> |<br>| 所属类     | 直接标注在类上                 | 标注在方法上 (通常在配置类中) |<br>| 控制力     | Spring 自动实例化，控制较少     | 完全由你控制实例化过程 (可以调用构造函数、设置属性等) |<br>|适用对象    | 自己写的代码 (能修改源码)        | 第三方库的类、需要复杂配置的对象 |<br>| 底层原理   | 类路径扫描 (Classpath Scanning)| 执行配置类中的方法 |</li>
+<li>. 工作原理详解<br>启动时扫描：Spring 容器启动时，会扫描所有带有 @Configuration 的类。<br>执行方法：它会执行这些类中所有带有 @Bean 注解的方法。<br>注册容器：将这些方法返回的对象实例注册到 Spring IOC 容器中。<br>单例管理：默认情况下，@Bean 创建的对象是单例 (Singleton) 的。如果在其他 Bean 中注入该对象，Spring 会直接复用第一次创建的那个实例。</li>
+</ul>
+<h1 id="Spring-容器（Spring-Container）是-Spring-框架的核心心脏。"><a href="#Spring-容器（Spring-Container）是-Spring-框架的核心心脏。" class="headerlink" title="Spring 容器（Spring Container）是 Spring 框架的核心心脏。"></a>Spring 容器（Spring Container）是 Spring 框架的核心心脏。</h1><p>简单来说，它是一个超级大工厂，负责创建、配置、组装和管理你应用程序中的所有对象（在 Spring 中称为 Bean）。<br>如果没有 Spring 容器，你需要自己在代码里写 new User()、new Service()、new Dao()，并且手动把它们互相赋值（比如 service.setDao(dao)）。有了 Spring 容器，这些工作全部由它自动完成，你只需要告诉它“我要什么”，它就会给你准备好。<br>. 核心功能：它具体管什么？<br>Spring 容器主要做三件事：</p>
+<h2 id="实例化-Instantiation-："><a href="#实例化-Instantiation-：" class="headerlink" title="实例化 (Instantiation)："></a>实例化 (Instantiation)：</h2><p>它负责 new 对象。你不需要写 new 关键字，容器会根据配置帮你创建对象。</p>
+<h2 id="依赖注入-Dependency-Injection-DI-："><a href="#依赖注入-Dependency-Injection-DI-：" class="headerlink" title="依赖注入 (Dependency Injection, DI)："></a>依赖注入 (Dependency Injection, DI)：</h2><p>这是最核心的功能。如果 A 对象需要 B 对象，容器会自动把 B 创建好，然后“塞”进 A 里面（通过构造函数或 Setter 方法）。<br>例子：UserService 需要 UserDao。你只需在 UserService 里写 @Autowired UserDao dao，容器启动时会自动把 UserDao 的实例赋值给它。</p>
+<h2 id="生命周期管理-Lifecycle-Management-："><a href="#生命周期管理-Lifecycle-Management-：" class="headerlink" title="生命周期管理 (Lifecycle Management)："></a>生命周期管理 (Lifecycle Management)：</h2><p>它管理对象从“出生”到“死亡”的全过程。<br>包括：创建 -&gt; 初始化（执行 @PostConstruct）-&gt; 使用 -&gt; 销毁（执行 @PreDestroy）。<br>它还管理对象的作用域（是单例 Singleton，还是每次请求都新建 Prototype）。</p>
+<p>. 形象比喻<br>想象你在经营一家餐厅（你的应用程序）：<br>没有 Spring 容器时：<br>你是主厨，每做一个菜（对象），你都要亲自去菜市场买菜（new 对象），洗菜切菜（配置属性），还要自己把盘子和筷子配好（依赖组装）。累且容易出错。<br>有 Spring 容器时：<br>Spring 容器就是后勤总管。<br>你（开发者）只需要写一张菜单（配置文件或 @Configuration 类），上面写着：“我需要一份宫保鸡丁（Bean），里面要加花生（依赖）”。<br>后勤总管（容器）看到菜单后，自动去采购、制作、摆盘。<br>当服务员（你的业务代码）喊“我要宫保鸡丁”时（@Autowired），总管直接把做好的菜端上来，服务员只管上菜，不用管菜是怎么来的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/" data-id="cuid5Swub5JEgSRy_n9K9cEVD" data-title="常见注释" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-我的第一篇文章AOP" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2026/02/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0AOP/" class="article-date">
+  <time class="dt-published" datetime="2026-02-27T14:13:41.000Z" itemprop="datePublished">2026-02-27</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2026/02/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0AOP/">我的第一篇文章AOP</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Spring Aop</p>
+<p>Spring AOP（Aspect-Oriented Programming，面向切面编程）是 Spring 框架的核心功能之一。<br>重点：主要目的是将那些与业务无关，却为业务模块所共同调用的逻辑（例如事务处理、日志管理、权限控制等）封装起来，便于减少系统的重复代码，降低模块间的耦合度，<br>有利于未来的可扩展性和可维护性<br>例子：</p>
+<p><img src="/images/SpringAOP.png" alt="Spring AOP 架构图"><br>这是一个苍穹外卖项目的AOP图<br>他的作用是自动填充创建时间、更新时间、创建人、更新人等字段，避免在每个业务方法中重复编写相同的代码。<br>重点：代码的重要组成部分（注解、切点、通知、切面）<br>@Aspect: 表示当前类是一个切面类<br>@Component: 表示当前类被Spring管理<br>@Pointcut(“execution(* com.sky.mapper.<em>.</em>(..))”): 表示当前类的所有方法都是切点<br>@Before(“execution(* com.sky.mapper.<em>.</em>(..))”): 表示在切点方法之前执行</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2026/02/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0AOP/" data-id="cuidQn68i-uNo6W1S0B_mkc0a" data-title="我的第一篇文章AOP" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-hello-world" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/11/18/hello-world/" class="article-date">
+  <time class="dt-published" datetime="2025-11-17T17:04:37.214Z" itemprop="datePublished">2025-11-18</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="p-name article-title" href="/2025/11/18/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/11/18/hello-world/" data-id="cuidyPbJVROvhat44QY-xgctz" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2026/02/">February 2026</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/11/">November 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/">常见注释</a>
+          </li>
+        
+          <li>
+            <a href="/2026/02/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0AOP/">我的第一篇文章AOP</a>
+          </li>
+        
+          <li>
+            <a href="/2025/11/18/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2026 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
