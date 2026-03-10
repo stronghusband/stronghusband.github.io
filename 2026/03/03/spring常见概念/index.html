@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Hexo</title>
+  <title>spring常见概念 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/index.html">
+  <meta name="description" content="Spring 容器（Spring Container）是 Spring 框架的核心心脏。简单来说，它是一个超级大工厂，负责创建、配置、组装和管理你应用程序中的所有对象（在 Spring 中称为 Bean）。如果没有 Spring 容器，你需要自己在代码里写 new User()、new Service()、new Dao()，并且手动把它们互相赋值（比如 service.setDao(dao)）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="spring常见概念">
+<meta property="og:url" content="http://example.com/2026/03/03/spring%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Spring 容器（Spring Container）是 Spring 框架的核心心脏。简单来说，它是一个超级大工厂，负责创建、配置、组装和管理你应用程序中的所有对象（在 Spring 中称为 Bean）。如果没有 Spring 容器，你需要自己在代码里写 new User()、new Service()、new Dao()，并且手动把它们互相赋值（比如 service.setDao(dao)）。">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-03-03T10:10:08.000Z">
+<meta property="article:modified_time" content="2026-03-04T15:43:52.874Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -150,486 +154,14 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-第一天-1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-spring常见概念" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2026/03/10/%E7%AC%AC%E4%B8%80%E5%A4%A9-1/">第一天</a>
-    </h1>
-  
-
-        
-        <a href="/2026/03/10/%E7%AC%AC%E4%B8%80%E5%A4%A9-1/" class="archive-article-date">
-  	<time datetime="2026-03-10T10:16:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-10</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="java中HashMap的底层原理"><a href="#java中HashMap的底层原理" class="headerlink" title="java中HashMap的底层原理"></a>java中HashMap的底层原理</h2><p><strong>HashMap 底层就是一个数组，结合链表和红黑树来解决冲突。</strong><br>它的工作原理其实很简单，主要说这 3 点：<br>1）<strong>怎么存</strong><br>存一个 Key-Value 时，先算 Key 的 hashCode，然后用 <code>(table.length-1) &amp; hash</code> 算出应该放在数组的哪个下标位置。<br>2）<strong>冲突了怎么办</strong><br>两个不同的 Key 算出来下标一样，就叫哈希冲突。HashMap 的解决办法是用链表把它们串起来，JDK 8 做了优化，如果同一个下标下的链表超过 8 个节点，就转成红黑树，查找速度从 O(n) 变成 O(log n)。<br>3）<strong>扩容机制</strong><br>数组长度是有限的，存多了会挤。HashMap 有个负载因子默认 0.75，数组用了 75% 就自动扩容，把数组大小翻倍，然后把所有数据重新算位置放到新数组里。这个操作叫 rehash，比较耗性能，所以初始化时最好给个预估容量。</p>
-<hr>
-<p>✅ <strong>总结</strong>：HashMap 通过数组 + 链表&#x2F;红黑树 实现高效存取，利用哈希算法定位，链表处理冲突，超长链表转为红黑树提升查询效率，并通过动态扩容维持性能。(注意哈希表是非线程安全的，多线程下会出现数据覆盖或者死循环)</p>
-<h2 id="http跟https的区别（安全，证书，优先收录）"><a href="#http跟https的区别（安全，证书，优先收录）" class="headerlink" title="http跟https的区别（安全，证书，优先收录）"></a>http跟https的区别（安全，证书，优先收录）</h2><table>
-<thead>
-<tr>
-<th>特性</th>
-<th>HTTP</th>
-<th>HTTPS</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>加密</td>
-<td>❌ 无</td>
-<td>✅ 有（SSL&#x2F;TLS）</td>
-</tr>
-<tr>
-<td>安全性</td>
-<td>低</td>
-<td>高</td>
-</tr>
-<tr>
-<td>默认端口</td>
-<td>80</td>
-<td>443</td>
-</tr>
-<tr>
-<td>URL 前缀</td>
-<td>http:&#x2F;&#x2F;</td>
-<td>https:&#x2F;&#x2F;</td>
-</tr>
-<tr>
-<td>SEO 友好度</td>
-<td>较差</td>
-<td>更优</td>
-</tr>
-<tr>
-<td>是否需要证书</td>
-<td>否</td>
-<td>是</td>
-</tr>
-<tr>
-<td>HTTP（HyperText Transfer Protocol）和 HTTPS（HyperText Transfer Protocol Secure）是用于在客户端（如浏览器）与服务器之间传输网页数据的协议，它们的主要区别在于<strong>安全性</strong>。以下是两者的关键区别：</td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<hr>
-<h3 id="1-安全性"><a href="#1-安全性" class="headerlink" title="1. 安全性"></a>1. <strong>安全性</strong></h3><ul>
-<li><strong>HTTP</strong>：明文传输，数据在传输过程中<strong>未加密</strong>，容易被窃听、篡改或劫持（如中间人攻击）。</li>
-<li><strong>HTTPS</strong>：使用 <strong>SSL&#x2F;TLS 协议</strong>对通信进行加密，确保数据的<strong>机密性、完整性</strong>和<strong>身份认证</strong>。</li>
-</ul>
-<h3 id="2-端口"><a href="#2-端口" class="headerlink" title="2. 端口"></a>2. <strong>端口</strong></h3><ul>
-<li><strong>HTTP</strong> 默认使用 <strong>端口 80</strong>。</li>
-<li><strong>HTTPS</strong> 默认使用 <strong>端口 443</strong>。</li>
-</ul>
-<h3 id="3-URL-标识"><a href="#3-URL-标识" class="headerlink" title="3. URL 标识"></a>3. <strong>URL 标识</strong></h3><ul>
-<li>HTTP 网站地址以 <code>http://</code> 开头。</li>
-<li>HTTPS 网站地址以 <code>https://</code> 开头，现代浏览器通常还会显示一个<strong>锁形图标</strong>表示安全连接。</li>
-</ul>
-<h3 id="4-性能"><a href="#4-性能" class="headerlink" title="4. 性能"></a>4. <strong>性能</strong></h3><ul>
-<li><strong>HTTP</strong>：无加密开销，速度略快（但差距极小）。</li>
-<li><strong>HTTPS</strong>：首次连接需进行 SSL&#x2F;TLS 握手，有一定延迟；但现代优化（如 TLS 1.3、会话复用）已大幅减少性能影响。</li>
-</ul>
-<h3 id="5-SEO-和浏览器支持"><a href="#5-SEO-和浏览器支持" class="headerlink" title="5. SEO 和浏览器支持"></a>5. <strong>SEO 和浏览器支持</strong></h3><ul>
-<li>搜索引擎（如 Google）<strong>优先收录 HTTPS 网站</strong>。</li>
-<li>现代浏览器对 HTTP 网站标记为“不安全”，可能阻止某些功能（如地理位置、Service Worker 等）。</li>
-</ul>
-<h3 id="6-证书"><a href="#6-证书" class="headerlink" title="6. 证书"></a>6. <strong>证书</strong></h3><ul>
-<li>HTTPS 需要从受信任的**证书颁发机构（CA）**获取 SSL&#x2F;TLS 证书（也有免费选项，如 Let’s Encrypt）。</li>
-<li>HTTP 不需要证书</li>
-</ul>
-<h2 id="进程，线程，协程"><a href="#进程，线程，协程" class="headerlink" title="进程，线程，协程"></a>进程，线程，协程</h2><p>当然可以！<strong>进程（Process）、线程（Thread）和协程（Coroutine）</strong> 是操作系统和并发编程中的三个核心概念，它们都用于实现“同时做多件事”，但层次、资源开销和控制方式完全不同。下面用清晰的结构和生活化比喻帮你理解它们的区别：</p>
-<hr>
-<h2 id="一、基本定义"><a href="#一、基本定义" class="headerlink" title="一、基本定义"></a>一、基本定义</h2><table>
-<thead>
-<tr>
-<th>概念</th>
-<th>定义</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>进程</strong></td>
-<td>操作系统分配资源的基本单位。一个运行中的程序就是一个进程（如 Chrome 浏览器、微信）。</td>
-</tr>
-<tr>
-<td><strong>线程</strong></td>
-<td>进程内的执行单元，是 CPU 调度的基本单位。一个进程至少有一个线程（主线程），也可以有多个线程。</td>
-</tr>
-<tr>
-<td><strong>协程</strong></td>
-<td>用户态的轻量级“线程”，由程序员主动控制切换，不是操作系统调度的，而是协作式（cooperative）运行。</td>
-</tr>
-<tr>
-<td>当然可以！<strong>进程、线程、协程</strong>虽然都能实现“并发”，但它们的<strong>适用场景截然不同</strong>。选错模型，轻则性能低下，重则系统崩溃。下面从实际工程角度，清晰讲解三者的典型使用场景，并附上真实案例，帮助你在面试或开发中做出合理选择。</td>
-<td></td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="一、进程（Process）——适合强隔离、高稳定性场景"><a href="#一、进程（Process）——适合强隔离、高稳定性场景" class="headerlink" title="一、进程（Process）——适合强隔离、高稳定性场景"></a>一、进程（Process）——适合<strong>强隔离、高稳定性</strong>场景</h2><h3 id="✅-核心优势："><a href="#✅-核心优势：" class="headerlink" title="✅ 核心优势："></a>✅ 核心优势：</h3><ul>
-<li>内存空间完全隔离</li>
-<li>一个崩溃不影响其他进程</li>
-<li>天然安全边界</li>
-</ul>
-<h3 id="🛠️-典型使用场景："><a href="#🛠️-典型使用场景：" class="headerlink" title="🛠️ 典型使用场景："></a>🛠️ 典型使用场景：</h3><table>
-<thead>
-<tr>
-<th>场景</th>
-<th>说明</th>
-<th>实例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>多用户&#x2F;多租户系统</strong></td>
-<td>防止一个用户影响他人</td>
-<td>Web 浏览器（Chrome 每个标签页一个进程）银行交易系统，防止数据泄露</td>
-</tr>
-<tr>
-<td><strong>关键服务容错</strong></td>
-<td>避免单点故障拖垮整个系统</td>
-<td>数据库主从进程、Nginx 的 master&#x2F;worker 模型</td>
-</tr>
-<tr>
-<td><strong>沙箱&#x2F;插件机制</strong></td>
-<td>第三方代码运行在隔离环境</td>
-<td>Electron 应用、IDE 插件（如 VS Code）</td>
-</tr>
-<tr>
-<td><strong>利用多核 CPU（无共享数据）</strong></td>
-<td>进程间无需频繁通信</td>
-<td>科学计算、批量数据处理（用 <code>multiprocessing</code>）</td>
-</tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>💡 <strong>什么时候选进程？</strong><br>当你<strong>不能容忍一个任务崩溃导致整个程序挂掉</strong>，或者需要<strong>严格安全隔离</strong>时，优先考虑多进程。</p>
-</blockquote>
-<hr>
-<h2 id="二、线程（Thread）——适合CPU-密集型-共享内存场景"><a href="#二、线程（Thread）——适合CPU-密集型-共享内存场景" class="headerlink" title="二、线程（Thread）——适合CPU 密集型 + 共享内存场景"></a>二、线程（Thread）——适合<strong>CPU 密集型 + 共享内存</strong>场景</h2><h3 id="✅-核心优势：-1"><a href="#✅-核心优势：-1" class="headerlink" title="✅ 核心优势："></a>✅ 核心优势：</h3><ul>
-<li>共享进程内存，通信高效</li>
-<li>可真正并行（多核 CPU）</li>
-<li>操作系统原生支持</li>
-</ul>
-<h3 id="🛠️-典型使用场景：-1"><a href="#🛠️-典型使用场景：-1" class="headerlink" title="🛠️ 典型使用场景："></a>🛠️ 典型使用场景：</h3><table>
-<thead>
-<tr>
-<th>场景</th>
-<th>说明</th>
-<th>实例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>CPU 密集型计算</strong></td>
-<td>需要多核并行加速</td>
-<td>图像处理、视频编码、机器学习推理</td>
-</tr>
-<tr>
-<td><strong>混合型任务（计算+I&#x2F;O）</strong></td>
-<td>部分线程做计算，部分处理网络</td>
-<td>游戏服务器（逻辑线程 + 网络线程）</td>
-</tr>
-<tr>
-<td><strong>GUI 应用响应性</strong></td>
-<td>主线程渲染 UI，子线程执行耗时操作</td>
-<td>桌面软件（如 Photoshop 后台保存）</td>
-</tr>
-<tr>
-<td><strong>传统企业级应用</strong></td>
-<td>Java EE、.NET 等基于线程池模型</td>
-<td>Tomcat 默认使用线程池处理 HTTP 请求</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>⚠️ 注意：线程需处理<strong>同步问题</strong>（锁、信号量等），否则容易出现竞态条件或死锁。</p>
-</blockquote>
-<blockquote>
-<p>💡 <strong>什么时候选线程？</strong><br>当你需要<strong>真正并行执行计算任务</strong>，且任务之间<strong>需要频繁共享数据</strong>时，多线程是首选。</p>
-</blockquote>
-<hr>
-<h2 id="三、协程（Coroutine）——适合高并发-I-O-密集型场景"><a href="#三、协程（Coroutine）——适合高并发-I-O-密集型场景" class="headerlink" title="三、协程（Coroutine）——适合高并发 I&#x2F;O 密集型场景"></a>三、协程（Coroutine）——适合<strong>高并发 I&#x2F;O 密集型</strong>场景</h2><h3 id="✅-核心优势：-2"><a href="#✅-核心优势：-2" class="headerlink" title="✅ 核心优势："></a>✅ 核心优势：</h3><ul>
-<li>极低内存开销（KB 级栈 vs MB 级线程栈）</li>
-<li>切换无内核态开销</li>
-<li>编程模型简洁（避免回调地狱）</li>
-</ul>
-<h3 id="🛠️-典型使用场景：-2"><a href="#🛠️-典型使用场景：-2" class="headerlink" title="🛠️ 典型使用场景："></a>🛠️ 典型使用场景：</h3><table>
-<thead>
-<tr>
-<th>场景</th>
-<th>说明</th>
-<th>实例</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>高并发网络服务</strong></td>
-<td>单机支撑数万~百万连接</td>
-<td>Web 服务器（Go 写的微服务、Node.js、Tornado）</td>
-</tr>
-<tr>
-<td><strong>异步 I&#x2F;O 操作</strong></td>
-<td>等待数据库、API、文件时不阻塞</td>
-<td>爬虫、消息队列消费者、API 网关</td>
-</tr>
-<tr>
-<td><strong>事件驱动架构</strong></td>
-<td>响应大量事件但每个事件处理快</td>
-<td>聊天服务器、实时推送系统（WebSocket）</td>
-</tr>
-<tr>
-<td><strong>现代云原生应用</strong></td>
-<td>资源受限环境下最大化吞吐</td>
-<td>Serverless 函数、K8s 微服务</td>
-</tr>
-</tbody></table>
-<blockquote>
-<p>🌰 举例：<br>用 Python 的 <code>asyncio</code> 或 Go 的 <code>goroutine</code>，一个服务轻松处理 <strong>10,000+ 并发请求</strong>；<br>如果用传统线程模型，光是 1 万个线程的内存开销就可能超过 <strong>10GB</strong>（每个线程默认 1MB 栈）！</p>
-</blockquote>
-<blockquote>
-<p>💡 <strong>什么时候选协程？</strong><br>当你的任务<strong>大部分时间在等 I&#x2F;O（网络、磁盘、数据库）</strong>，而不是拼命算 CPU，协程是最优解。</p>
-</blockquote>
-<hr>
-<h2 id="四、对比总结表（面试可直接说）"><a href="#四、对比总结表（面试可直接说）" class="headerlink" title="四、对比总结表（面试可直接说）"></a>四、对比总结表（面试可直接说）</h2><table>
-<thead>
-<tr>
-<th>维度</th>
-<th>进程</th>
-<th>线程</th>
-<th>协程</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>最佳场景</strong></td>
-<td>强隔离、容错、安全</td>
-<td>CPU 密集、共享内存计算</td>
-<td>高并发 I&#x2F;O（网络、DB）</td>
-</tr>
-<tr>
-<td><strong>并发规模</strong></td>
-<td>百级</td>
-<td>千级（受内存限制）</td>
-<td>万级 ~ 百万级</td>
-</tr>
-<tr>
-<td><strong>典型技术</strong></td>
-<td><code>fork()</code>、<code>multiprocessing</code></td>
-<td><code>pthread</code>、Java Thread、线程池</td>
-<td>Go goroutine、Python asyncio、Kotlin Coroutines</td>
-</tr>
-<tr>
-<td><strong>是否并行</strong></td>
-<td>是（多核）</td>
-<td>是（多核）</td>
-<td>否（单线程内并发，除非配合多线程）</td>
-</tr>
-</tbody></table>
-<hr>
-<h2 id="✅-面试回答技巧（一句话收尾）："><a href="#✅-面试回答技巧（一句话收尾）：" class="headerlink" title="✅ 面试回答技巧（一句话收尾）："></a>✅ 面试回答技巧（一句话收尾）：</h2><blockquote>
-<p>“简单来说：</p>
-<ul>
-<li>要<strong>安全隔离</strong> → 用<strong>进程</strong>；</li>
-<li>要<strong>压榨 CPU</strong> → 用<strong>线程</strong>；</li>
-<li>要<strong>扛住海量请求</strong> → 用<strong>协程</strong>。”</li>
-</ul>
-</blockquote>
-<hr>
-<p>如果你正在准备后端、系统或高并发方向的面试，建议再补充一句：</p>
-<blockquote>
-<p>“现在很多高性能服务（比如用 Go 或 Rust 写的）其实是 <strong>‘多进程 + 协程’ 混合模型</strong>：用多进程利用多核，每个进程内用协程处理高并发 I&#x2F;O，兼顾性能与扩展性。”</p>
-</blockquote>
-<p>这样能体现你的工程思维！需要我帮你结合某个语言（如 Java&#x2F;Go&#x2F;Python）具体展开吗？</p>
-<h2 id="ThreadLocal"><a href="#ThreadLocal" class="headerlink" title="ThreadLocal"></a>ThreadLocal</h2><table>
-<thead>
-<tr>
-<th>问题</th>
-<th>回答要点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>ThreadLocal 是什么？</td>
-<td>线程局部变量，每个线程有独立副本，实现线程隔离。</td>
-</tr>
-<tr>
-<td>底层怎么实现的？</td>
-<td>每个 Thread 有个 ThreadLocalMap，key 是 ThreadLocal 实例，value 是用户数据。</td>
-</tr>
-<tr>
-<td>为什么 key 用弱引用？</td>
-<td>防止 ThreadLocal 实例无法回收（如果强引用，即使外部不用了，map 仍持有引用）。</td>
-</tr>
-<tr>
-<td>会内存泄漏吗？</td>
-<td>会！value 是强引用，线程长期存活时不 remove 会导致泄漏。</td>
-</tr>
-<tr>
-<td>和 synchronized 有什么区别？</td>
-<td>synchronized 是“共享+加锁”，ThreadLocal 是“不共享+副本”，思路完全不同。</td>
-</tr>
-<tr>
-<td>✅ 总结一句话（面试收尾）：</td>
-<td></td>
-</tr>
-<tr>
-<td>ThreadLocal 通过“空间换安全”的方式，为每个线程提供独立的变量副本，避免了同步开销，适用于线程内上下文传递；但必须注意在线程池中及时调用 remove()，防止内存泄漏。</td>
-<td></td>
-</tr>
-<tr>
-<td>四、典型应用场景</td>
-<td></td>
-</tr>
-<tr>
-<td>. 用户上下文传递（最常见！）</td>
-<td></td>
-</tr>
-<tr>
-<td>Web 应用中，在 Filter 里把当前用户信息存入 ThreadLocal。</td>
-<td></td>
-</tr>
-<tr>
-<td>后续 Service、DAO 层直接读取，无需层层传参。</td>
-<td></td>
-</tr>
-</tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">public class UserContext &#123;</span><br><span class="line">    private static final ThreadLocal&lt;User&gt; currentUser = new ThreadLocal&lt;&gt;();</span><br><span class="line">    </span><br><span class="line">    public static void setCurrentUser(User user) &#123;</span><br><span class="line">        currentUser.set(user);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    public static User getCurrentUser() &#123;</span><br><span class="line">        return currentUser.get();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>. 数据库连接 &#x2F; 事务管理<br>Spring 的 @Transactional 就用 ThreadLocal 保证同一个线程使用同一个数据库连接</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2026/03/10/%E7%AC%AC%E4%B8%80%E5%A4%A9-1/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Jwtutils" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>&#96;&#x2F;&#x2F; 指定签名的时候使用的签名算法，也就是header那部分<br>SignatureAlgorithm signatureAlgorithm &#x3D; SignatureAlgorithm.HS256;  </p>
-<p>&#x2F;&#x2F; 生成JWT的时间<br>long expMillis &#x3D; System.currentTimeMillis() + ttlMillis;<br>&#x2F;&#x2F; 生成签发时间<br>Date issuedAt &#x3D; new Date();  </p>
-<p>&#x2F;&#x2F; 生成过期时间<br>Date exp &#x3D; new Date(expMillis);  </p>
-<p>&#x2F;&#x2F; 设置jwt的body<br>JwtBuilder builder &#x3D; Jwts.builder()<br>        &#x2F;&#x2F; 如果有私有声明，一定要先设置这个自己创建的私有的声明，这个是给builder的claim赋值，一旦写在标准的声明赋值之后，就是覆盖了那些标准的声明的<br>        .setClaims(claims)<br>        &#x2F;&#x2F; 设置签名使用的签名算法和签名使用的秘钥<br>        .signWith(signatureAlgorithm, secretKey.getBytes(StandardCharsets.UTF_8))<br>        &#x2F;&#x2F; 设置过期时间<br>        .setExpiration(exp);  </p>
-<p>return builder.compact();&#96;</p>
-<p>&#96;@Component<br>@ConfigurationProperties(prefix &#x3D; “sky.jwt”)<br>@Data<br>public class JwtProperties {  </p>
-<pre><code>/**  
- * 管理端员工生成jwt令牌相关配置  
- */  
-private String adminSecretKey;  
-private long adminTtl;  
-private String adminTokenName;  
-
-/**  
- * 用户端微信用户生成jwt令牌相关配置  
- */  
-private String userSecretKey;  
-private long userTtl;  
-private String userTokenName;  
-</code></pre>
-<p>}<code> </code>    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {<br>        &#x2F;&#x2F;判断当前拦截到的是Controller的方法还是其他资源<br>        if (!(handler instanceof HandlerMethod)) {<br>            &#x2F;&#x2F;当前拦截到的不是动态方法，直接放行<br>            return true;<br>        }<br>        &#x2F;&#x2F;1、从请求头中获取令牌<br>        String token &#x3D; request.getHeader(jwtProperties.getAdminTokenName());<br>        &#x2F;&#x2F;2、校验令牌<br>        try {<br>            log.info(“jwt校验:{}”, token);<br>            &#x2F;&#x2F;解析令牌<br>            Claims claims &#x3D; JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);<br>            &#x2F;&#x2F;从payload中获取员工id<br>            Long empId &#x3D; Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());<br>            log.info(“当前员工id：”, empId);  </p>
-<p>&#x2F;&#x2F;            将用户id存储到ThreadLocal<br>            BaseContext.setCurrentId(empId);  </p>
-<pre><code>        //3、通过，放行  
-        return true;  
-    } catch (Exception ex) {  
-        //4、不通过，响应401状态码  
-        response.setStatus(401);  
-        return false;  
-    }  
-}  
-</code></pre>
-<p>}&#96;</p>
-<p>┌─────────────┐     ┌─────────────────────────────────┐<br>│  登录请求    │────▶│       拦截器检查路径             │<br>│&#x2F;admin&#x2F;login │     │                                  │<br>└─────────────┘     │ 1. 路径是 &#x2F;admin&#x2F;login           │<br>                    │ 2. 在排除列表中找到 ✓            │<br>                    │ 3. 直接放行                      │<br>                    └────────────┬────────────────────┘<br>                                 ▼<br>                    ┌─────────────────────────┐<br>                    │   Controller处理登录    │<br>                    │   - 验证用户名密码      │<br>                    │   - 生成JWT令牌         │<br>                    │   - 返回token给前端     │<br>                    └─────────────────────────┘<br>                                 │<br>                    ┌────────────▼────────────┐<br>                    │   前端保存token          │<br>                    │   localStorage.setItem( │<br>                    │     ‘token’, xxx)       │<br>                    └─────────────────────────┘</p>
-<p>┌─────────────┐     ┌─────────────────────────────────┐<br>│  业务请求    │────▶│       拦截器检查路径             │<br>│&#x2F;admin&#x2F;order │     │                                  │<br>│ Header:     │     │ 1. 路径是 &#x2F;admin&#x2F;order           │<br>│ token&#x3D;xxx   │     │ 2. 不在排除列表中 ✗              │<br>└─────────────┘     │ 3. 开始校验token                 │<br>                    └────────────┬────────────────────┘<br>                                 ▼<br>                    ┌─────────────────────────┐<br>                    │   校验token有效性       │<br>                    │   - 解析token           │<br>                    │   - 验证签名            │<br>                    │   - 检查过期时间        │<br>                    └─────────────────────────┘<br>                                 │<br>                    ┌────────────▼────────────┐<br>                    │      校验通过？          │<br>                    └────────────┬────────────┘<br>              ┌──────────────────┴──────────────────┐<br>              ▼                                       ▼<br>    ┌───────────────────┐                 ┌───────────────────┐<br>    │      ✅ 通过       │                 │      ❌ 失败       │<br>    │ - 用户ID存入       │                 │ - 返回401状态码    │<br>    │   ThreadLocal      │                 │ - 拦截请求         │<br>    │ - 放行到Controller │                 │ - 前端跳转登录页   │<br>    └───────────────────┘                 └───────────────────┘<br>              │<br>              ▼<br>    ┌───────────────────┐<br>    │  Controller执行业务│<br>    │ - 从ThreadLocal    │<br>    │   获取用户ID       │<br>    │ - 处理业务逻辑     │<br>    └───────────────────┘</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2026/03/05/Jwtutils/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-spring常见概念" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2026/03/03/spring%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/">spring常见概念</a>
+    <h1 class="article-title" itemprop="name">
+      spring常见概念
     </h1>
   
 
@@ -653,6 +185,27 @@ private String userTokenName;
       
 
       
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
     </div>
     <div class="article-info article-info-index">
       
@@ -660,16 +213,84 @@ private String userTokenName;
       
 
       
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2026/03/03/spring%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/">展开全文 >></a>
-        </p>
-      
 
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2026/03/03/spring%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2026/03/05/Jwtutils/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">常见注释</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -689,223 +310,14 @@ private String userTokenName;
 
 
 
-
   
-    <article id="post-常见注释" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/">常见注释</a>
-    </h1>
   
 
-        
-        <a href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/" class="archive-article-date">
-  	<time datetime="2026-02-28T14:17:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-02-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>@RequestMapping<br>它的作用是：建立 HTTP 请求 URL 与 Java 控制器（Controller）方法之间的映射关系。<br>简单来说，就是告诉 Spring：“当用户访问某个特定的网址（URL）时，请执行这个 Java 方法。”<br>它可以用在类级别或方法级别。</p>
-<ul>
-<li>类级别：表示该类中的所有方法都共享同一个基础 URL。</li>
-<li>方法级别：表示仅对该方法生效，用于更精确的映射。</li>
-</ul>
-<h2 id="RestController"><a href="#RestController" class="headerlink" title="@RestController"></a>@RestController</h2><p>作用：这是一个组合注解，相当于@Controller + @ResponseBody<br>用途：用于标记一个类为 REST 风格的控制器，该类中的所有方法返回的数据（如字符串、对象等）会自动被序列化为 JSON（或 XML 等格式），并直接写入 HTTP 响应体中，而不是返回视图名称（如 JSP 页面）。</p>
-<h2 id="Bean"><a href="#Bean" class="headerlink" title="@Bean"></a>@Bean</h2><p>主要作用是告诉 Spring 容器：“这个方法返回的对象，请把它作为一个 Bean（组件）管理起来，放入 Spring 的 IOC 容器中。<br>通常，我们使用 @Component、@Service、@Controller 等注解让 Spring 自动扫描并注册类。但是，当你无法修改源代码（例如第三方库的类），或者需要自定义复杂的初始化逻辑时，就需要使用 @Bean</p>
-<ul>
-<li>| 特性       | <code>@Component</code> (及衍生注解)      | <code>@Bean</code> |<br>| 所属类     | 直接标注在类上                 | 标注在方法上 (通常在配置类中) |<br>| 控制力     | Spring 自动实例化，控制较少     | 完全由你控制实例化过程 (可以调用构造函数、设置属性等) |<br>|适用对象    | 自己写的代码 (能修改源码)        | 第三方库的类、需要复杂配置的对象 |<br>| 底层原理   | 类路径扫描 (Classpath Scanning)| 执行配置类中的方法 |</li>
-<li>. 工作原理详解<br>启动时扫描：Spring 容器启动时，会扫描所有带有 @Configuration 的类。<br>执行方法：它会执行这些类中所有带有 @Bean 注解的方法。<br>注册容器：将这些方法返回的对象实例注册到 Spring IOC 容器中。<br>单例管理：默认情况下，@Bean 创建的对象是单例 (Singleton) 的。如果在其他 Bean 中注入该对象，Spring 会直接复用第一次创建的那个实例。</li>
-</ul>
-<p>配置类@Configuration<br>A. 定义 Bean（替代 <bean> 标签）<br>在配置类中，你可以通过 @Bean 注解标记方法，该方法的返回值对象就会被注册到 Spring 容器中，成为一个 Bean。<br>疑惑 3：它和 @Component (组件扫描) 有什么关系？<br>这是最容易晕的地方。<br>@Component &#x2F; @Service &#x2F; @Controller：<br>用于业务类。比如 UserService, OrderController。<br>意思是：“这个类本身就是一个 Bean，请把它注册进去。”<br>Spring 直接把这个类实例化。<br>@Configuration + @Bean：<br>用于第三方类或复杂创建逻辑。比如 DataSource (数据库连接池), RedisTemplate。<br>这些类是别人写的库，你没法给它们加 @Component 注解。<br>意思是：“这个类是个工厂，请运行它里面的 @Bean 方法，把方法的返回值注册为 Bean。”</p>
-<p>A. @Bean 方法（工厂模式）<br>定义：在 @Configuration 类中，标有 @Bean 的方法。<br>作用：告诉 Spring，“请执行这个方法，把返回值注册为 Bean”。<br>触发时机：Spring 容器启动刷新阶段，扫描配置类时，主动执行所有 @Bean 方法。<br>B. 接口回调方法（观察者&#x2F;策略模式）<br>定义：你的配置类实现了某个特定的接口（如 WebMvcConfigurer），并重写了其中的方法（如 addInterceptors）。<br>作用：这是 Spring 定义的“扩展点”（Extension Point）。意思是：“如果你对这个默认行为不满意，可以重写这个方法来自定义。”<br>触发时机：Spring MVC 初始化过程中，会查找所有实现了 WebMvcConfigurer 接口的 Bean，然后主动调用它们的 addInterceptors 方法，把注册表（InterceptorRegistry）传进去。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-我的第一篇文章AOP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2026/02/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0AOP/">我的第一篇文章AOP</a>
-    </h1>
   
 
-        
-        <a href="/2026/02/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0AOP/" class="archive-article-date">
-  	<time datetime="2026-02-27T14:13:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-02-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Spring Aop</p>
-<p>Spring AOP（Aspect-Oriented Programming，面向切面编程）是 Spring 框架的核心功能之一。<br>重点：主要目的是将那些与业务无关，却为业务模块所共同调用的逻辑（例如事务处理、日志管理、权限控制等）封装起来，便于减少系统的重复代码，降低模块间的耦合度，<br>有利于未来的可扩展性和可维护性<br>例子：</p>
-<p><img src="/images/SpringAOP.png" alt="Spring AOP 架构图"><br>这是一个苍穹外卖项目的AOP图<br>他的作用是自动填充创建时间、更新时间、创建人、更新人等字段，避免在每个业务方法中重复编写相同的代码。<br>重点：代码的重要组成部分（注解、切点、通知、切面）<br>@Aspect: 表示当前类是一个切面类<br>@Component: 表示当前类被Spring管理<br>@Pointcut(“execution(* com.sky.mapper.<em>.</em>(..))”): 表示当前类的所有方法都是切点<br>@Before(“execution(* com.sky.mapper.<em>.</em>(..))”): 表示在切点方法之前执行</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2026/02/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0AOP/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2025/11/18/hello-world/">Hello World</a>
-    </h1>
   
 
-        
-        <a href="/2025/11/18/hello-world/" class="archive-article-date">
-  	<time datetime="2025-11-17T17:04:37.214Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-11-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2025/11/18/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
 
 
@@ -928,8 +340,8 @@ private String userTokenName;
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
