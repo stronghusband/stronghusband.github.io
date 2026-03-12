@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2026/3 | Hexo</title>
+  <title>&#39;post和get请求&#39; | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2026/03/index.html">
+  <meta name="description" content="POST 请求可以用于查询，但从设计原则、语义规范、性能和安全性等多个角度来看，并不是所有查询都适合用 POST。下面从几个方面详细解释：  一、HTTP 方法的语义（RESTful 原则）HTTP 协议为不同方法定义了明确的语义：  GET：用于获取资源，是安全的（safe） 和 幂等的（idempotent），不应产生副作用。 POST：用于提交数据，通常会改变服务器状态（如创建资源、触发操作">
+<meta property="og:type" content="article">
+<meta property="og:title" content="&#39;post和get请求&#39;">
+<meta property="og:url" content="http://example.com/2026/03/12/post%E5%92%8Cget%E8%AF%B7%E6%B1%82/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="POST 请求可以用于查询，但从设计原则、语义规范、性能和安全性等多个角度来看，并不是所有查询都适合用 POST。下面从几个方面详细解释：  一、HTTP 方法的语义（RESTful 原则）HTTP 协议为不同方法定义了明确的语义：  GET：用于获取资源，是安全的（safe） 和 幂等的（idempotent），不应产生副作用。 POST：用于提交数据，通常会改变服务器状态（如创建资源、触发操作">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-03-12T04:39:21.000Z">
+<meta property="article:modified_time" content="2026-03-12T11:11:44.561Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -150,151 +154,275 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-post和get请求" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
+    <h1 class="article-title" itemprop="name">
+      &#39;post和get请求&#39;
+    </h1>
   
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2026" class="archive-year">2026</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/12/post%E5%92%8Cget%E8%AF%B7%E6%B1%82/" class="archive-article-date">
+
+        
+        <a href="/2026/03/12/post%E5%92%8Cget%E8%AF%B7%E6%B1%82/" class="archive-article-date">
   	<time datetime="2026-03-12T04:39:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-12</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/12/post%E5%92%8Cget%E8%AF%B7%E6%B1%82/">&#39;post和get请求&#39;</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>POST 请求<strong>可以用于查询</strong>，但从设计原则、语义规范、性能和安全性等多个角度来看，<strong>并不是所有查询都适合用 POST</strong>。下面从几个方面详细解释：</p>
+<hr>
+<h3 id="一、HTTP-方法的语义（RESTful-原则）"><a href="#一、HTTP-方法的语义（RESTful-原则）" class="headerlink" title="一、HTTP 方法的语义（RESTful 原则）"></a>一、HTTP 方法的语义（RESTful 原则）</h3><p>HTTP 协议为不同方法定义了明确的语义：</p>
+<ul>
+<li><strong>GET</strong>：用于<strong>获取资源</strong>，是<strong>安全的（safe）</strong> 和 <strong>幂等的（idempotent）</strong>，不应产生副作用。</li>
+<li><strong>POST</strong>：用于<strong>提交数据</strong>，通常会<strong>改变服务器状态</strong>（如创建资源、触发操作），<strong>不是安全的，也不是幂等的</strong>。</li>
+</ul>
+<blockquote>
+<p>✅ 查询操作本质上是“读取”，不修改服务器状态，因此应优先使用 GET。</p>
+</blockquote>
+<hr>
+<h3 id="二、缓存与性能"><a href="#二、缓存与性能" class="headerlink" title="二、缓存与性能"></a>二、缓存与性能</h3><ul>
+<li><strong>GET 请求可以被浏览器、代理、CDN 缓存</strong>，提高性能。</li>
+<li><strong>POST 请求默认不会被缓存</strong>，每次都会发送到服务器，效率较低。</li>
+</ul>
+<p>例如：搜索商品列表如果用 POST，就无法利用缓存机制，增加服务器负担。</p>
+<hr>
+<h3 id="三、URL-与参数可见性"><a href="#三、URL-与参数可见性" class="headerlink" title="三、URL 与参数可见性"></a>三、URL 与参数可见性</h3><ul>
+<li><strong>GET</strong>：参数在 URL 中（如 <code>?q=手机&amp;page=1</code>），便于：<ul>
+<li>书签收藏</li>
+<li>分享链接</li>
+<li>浏览器历史记录</li>
+</ul>
+</li>
+<li><strong>POST</strong>：参数在请求体中，用户无法直接看到或分享。</li>
+</ul>
+<blockquote>
+<p>如果你的查询需要被人分享（比如搜索结果页），用 POST 就很不方便。</p>
+</blockquote>
+<hr>
+<h3 id="四、安全性误解"><a href="#四、安全性误解" class="headerlink" title="四、安全性误解"></a>四、安全性误解</h3><p>很多人误以为“POST 更安全”，因为参数不在 URL 中。但实际上：</p>
+<ul>
+<li><strong>HTTPS 下，GET 和 POST 的参数都是加密传输的</strong>，安全性相当。</li>
+<li>敏感信息（如密码）不应出现在 URL 中，是因为 URL 可能被日志记录，但这不适用于普通查询参数。</li>
+</ul>
+<blockquote>
+<p>所以，除非查询参数非常敏感或极长，否则没必要用 POST。</p>
+</blockquote>
+<hr>
+<h3 id="五、何时可以用-POST-做查询？"><a href="#五、何时可以用-POST-做查询？" class="headerlink" title="五、何时可以用 POST 做查询？"></a>五、何时可以用 POST 做查询？</h3><p>虽然不推荐，但在以下场景中，<strong>使用 POST 进行查询是可以接受的</strong>：</p>
+<ol>
+<li><strong>查询条件非常复杂</strong>（如嵌套 JSON、大量筛选条件），超出 URL 长度限制（通常 2048 字符）。</li>
+<li><strong>需要传递非结构化数据</strong>（如全文搜索 DSL，像 Elasticsearch 的查询）。</li>
+<li><strong>防止参数被日志记录</strong>（如包含用户隐私字段）。</li>
+<li><strong>API 设计统一性考虑</strong>（某些内部系统为简化客户端逻辑，全部用 POST）。</li>
+</ol>
+<p>但这些属于<strong>例外情况</strong>，不能作为普遍做法。</p>
+<hr>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>GET（推荐用于查询）</th>
+<th>POST（不推荐用于普通查询）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>语义</td>
+<td>获取资源 ✅</td>
+<td>提交&#x2F;创建 ❌</td>
+</tr>
+<tr>
+<td>可缓存</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>可书签&#x2F;分享</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+<tr>
+<td>参数长度限制</td>
+<td>有（URL 长度）</td>
+<td>无（请求体）</td>
+</tr>
+<tr>
+<td>安全性（HTTPS）</td>
+<td>与 POST 相当</td>
+<td>与 GET 相当</td>
+</tr>
+<tr>
+<td>幂等性</td>
+<td>✅</td>
+<td>❌</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>📌 <strong>最佳实践</strong>：</p>
+<ul>
+<li>简单查询 → 用 <strong>GET</strong></li>
+<li>复杂&#x2F;大数据量查询 → 可考虑 <strong>POST</strong>，但需有充分理由</li>
+</ul>
+</blockquote>
+<hr>
+<p>如果你是在设计 API，建议遵循 RESTful 规范，让 HTTP 方法的语义清晰，便于维护和理解。<br>在面试中被问到“POST 请求可以用于查询吗？为什么不全用 POST？”时，你可以这样<strong>简洁、清晰、有逻辑地回答</strong>，既体现你对 HTTP 协议的理解，又展现工程思维：</p>
+<hr>
+<h3 id="✅-推荐回答（约-1–2-分钟）："><a href="#✅-推荐回答（约-1–2-分钟）：" class="headerlink" title="✅ 推荐回答（约 1–2 分钟）："></a>✅ 推荐回答（约 1–2 分钟）：</h3><blockquote>
+<p>“POST 理论上是可以用来做查询的，因为 HTTP 协议本身不限制请求体的内容。但在实际开发中，我们通常不会全部用 POST 来做查询，主要有几个原因：</p>
+<p>第一，<strong>语义问题</strong>。HTTP 方法是有明确语义的：GET 表示‘获取资源’，是安全且幂等的；而 POST 表示‘提交数据’，通常会改变服务器状态。用 POST 做查询会违背 RESTful 设计原则，让接口含义不清晰。</p>
+<p>第二，<strong>性能和缓存</strong>。GET 请求可以被浏览器、CDN 或代理缓存，提升性能；而 POST 默认不会被缓存，每次都要打到后端，增加服务器压力。</p>
+<p>第三，<strong>用户体验</strong>。GET 的参数在 URL 里，用户可以直接收藏、分享链接，比如搜索结果页；而 POST 的参数在请求体中，无法直接通过 URL 复现。</p>
+<p>当然，在某些特殊场景下，比如查询条件特别复杂、参数太长超出 URL 限制，或者涉及敏感数据不想出现在日志中，也可以用 POST 做查询——但这属于例外，不是常规做法。</p>
+<p>所以，<strong>能用 GET 的查询，优先用 GET；只有在必要时才用 POST。</strong>”</p>
+</blockquote>
+<hr>
+<h3 id="💡-面试加分点："><a href="#💡-面试加分点：" class="headerlink" title="💡 面试加分点："></a>💡 面试加分点：</h3><ul>
+<li>提到 <strong>RESTful 规范</strong> 和 <strong>HTTP 方法语义</strong></li>
+<li>强调 <strong>缓存、幂等性、可分享性</strong> 等工程考量</li>
+<li>承认 POST 在特定场景下的合理性（体现辩证思维）</li>
+<li>最后给出<strong>明确结论</strong>，展现决策能力</li>
+</ul>
+<hr>
+<h3 id="❌-避免这样说："><a href="#❌-避免这样说：" class="headerlink" title="❌ 避免这样说："></a>❌ 避免这样说：</h3><ul>
+<li>“POST 更安全，所以查询都用 POST” → ❌（误解，HTTPS 下两者一样安全）</li>
+<li>“反正都能传数据，随便用哪个都行” → ❌（显得不专业）</li>
+<li>“我从来不用 GET，全是 POST” → ❌（违反最佳实践）</li>
+</ul>
+<hr>
+<p>这样的回答既专业又务实，面试官会觉得你<strong>理解协议本质，也有实际工程经验</strong>。</p>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2026/03/12/post%E5%92%8Cget%E8%AF%B7%E6%B1%82/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/11/redis/" class="archive-article-date">
-  	<time datetime="2026-03-11T10:22:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-11</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2026/03/11/redis/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">&#39;redis&#39;</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/11/redis/">&#39;redis&#39;</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/10/%E7%AC%AC%E4%B8%80%E5%A4%A9-1/" class="archive-article-date">
-  	<time datetime="2026-03-10T10:16:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/10/%E7%AC%AC%E4%B8%80%E5%A4%A9-1/">第一天</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/05/Jwtutils/" class="archive-article-date">
-  	<time datetime="2026-03-05T14:03:46.922Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-05</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/03/spring%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/" class="archive-article-date">
-  	<time datetime="2026-03-03T10:10:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/03/spring%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/">spring常见概念</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -317,8 +445,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
