@@ -152,6 +152,88 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-redis分布式锁" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2026/03/15/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">&#39;redis分布式锁&#39;</a>
+    </h1>
+  
+
+        
+        <a href="/2026/03/15/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" class="archive-article-date">
+  	<time datetime="2026-03-15T09:31:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在面试中被问到“讲一下 Redis 分布式锁”，你可以按照以下结构清晰、有条理地回答，既展示你对概念的理解，也体现你对实际问题和解决方案的思考：</p>
+<p>什么是分布式锁？<br>分布式锁是在分布式系统中，用于控制多个节点（进程&#x2F;服务）对共享资源进行互斥访问的一种机制。<br>与单机锁（如 synchronized、ReentrantLock）不同，分布式锁需要跨多个 JVM 或服务器协调。</p>
+<p>为什么用 Redis 实现分布式锁？<br>Redis 具备以下特点，适合实现分布式锁：<br>高性能：基于内存，读写快。<br>原子操作：如 SETNX（SET if Not eXists）、Lua 脚本等，可保证操作的原子性。<br>高可用：配合 Redis 集群或哨兵，可提升可靠性。</p>
+<p>基本实现方式（演进思路）</p>
+<p>❌ 错误做法：只用 SETNX<br>SETNX lock_key 1<br>执行业务逻辑<br>DEL lock_key</p>
+<p>问题：<br>如果服务宕机，锁无法释放 → 死锁。<br>没有设置过期时间。</p>
+<p>✅ 改进1：SETNX + EXPIRE<br>SETNX lock_key 1<br>EXPIRE lock_key 10</p>
+<p>问题：<br>SETNX 和 EXPIRE 不是原子操作。如果 SETNX 成功但 EXPIRE 失败（如进程崩溃），依然死锁。</p>
+<p>✅ 正确做法：使用带 NX 和 PX 的 SET 命令（Redis 2.6.12+）<br>SET lock_key unique_value NX PX 30000</p>
+<p>NX：只有 key 不存在时才设置（相当于 SETNX）。<br>PX 30000：设置 30 秒自动过期。<br>unique_value：通常是客户端 ID 或 UUID，用于安全释放锁。</p>
+<p>✅ 安全释放锁：使用 Lua 脚本<br>防止 A 释放了 B 的锁（比如 A 的锁过期了，B 获取到锁，A 还去 DEL）。<br>if redis.call(“GET”, KEYS[1]) &#x3D;&#x3D; ARGV[1] then<br>return redis.call(“DEL”, KEYS[1])<br>else<br>return 0<br>end</p>
+<p>只有 value 匹配时才删除，保证谁加锁谁释放。</p>
+<p>可能的问题与解决方案<br>问题   解决方案<br>锁过期但业务未完成   使用“锁续期”（看门狗机制，如 Redisson 的 watchdog）</p>
+<p>主从切换导致锁丢失   使用 Redlock 算法（争议较大）或强一致存储（如 ZooKeeper）</p>
+<p>并发竞争激烈   加入重试机制（自旋 + 随机退避）</p>
+<p>⚠️ 注意：Redlock 在社区中有争议（Martin Kleppmann vs Antirez），实际生产中很多公司直接用单 Redis 实例 + 高可用部署，而非 Redlock。</p>
+<p>推荐实践：使用成熟框架<br>Redisson：提供了 RLock，支持自动续期、可重入、公平锁等。<br>内部封装了加锁、释放、看门狗等逻辑，避免重复造轮子。</p>
+<p>总结<br>Redis 分布式锁核心：原子加锁 + 唯一标识 + 安全释放 + 合理超时。<br>要考虑死锁、误删、主从不一致等问题。<br>生产环境建议使用 Redisson 等经过验证的库。</p>
+<p>示例回答（口语化）：<br>“Redis 分布式锁主要是为了解决多个服务实例同时操作共享资源的问题。我们通常用 SET key value NX PX timeout 来原子地加锁，并用一个唯一值（比如 UUID）作为 value。释放锁的时候，必须通过 Lua 脚本判断 value 是否匹配，防止删错别人的锁。此外，还要考虑锁过期但业务还没执行完的情况，这时候可以用 Redisson 的看门狗自动续期。当然，在极端情况下比如主从切换，可能会丢锁，所以对一致性要求极高的场景可能要考虑其他方案，比如 ZooKeeper。”</p>
+<p>这样的回答既有原理，又有实践，还能体现你对边界情况的思考，会给面试官留下深刻印象。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2026/03/15/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-事物的隔离级别" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
