@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives: 2026/3 | Hexo</title>
+  <title>SpringAOP | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/2026/03/index.html">
+  <meta name="description" content="当面试官让你“讲讲 Spring AOP”，这是一个开放性但非常经典的问题，考察你对 Spring 核心机制的理解深度。回答时建议采用 “总—分—总”结构：先定义，再讲原理、核心概念、实现方式，最后结合使用场景和注意事项。 下面是一个清晰、有层次、体现理解深度的回答模板，适合 1~3 年经验的开发者（可根据自身水平调整技术细节）：  ✅ 推荐回答（约 2~3 分钟）： “Spring AOP（As">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringAOP">
+<meta property="og:url" content="http://example.com/2026/03/16/SpringAOP/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="当面试官让你“讲讲 Spring AOP”，这是一个开放性但非常经典的问题，考察你对 Spring 核心机制的理解深度。回答时建议采用 “总—分—总”结构：先定义，再讲原理、核心概念、实现方式，最后结合使用场景和注意事项。 下面是一个清晰、有层次、体现理解深度的回答模板，适合 1~3 年经验的开发者（可根据自身水平调整技术细节）：  ✅ 推荐回答（约 2~3 分钟）： “Spring AOP（As">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-03-16T15:48:04.000Z">
+<meta property="article:modified_time" content="2026-03-16T15:49:17.715Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -150,259 +154,212 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-SpringAOP" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2026" class="archive-year">2026</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/16/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="archive-article-date">
-  	<time datetime="2026-03-16T15:48:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-16</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/16/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">JVM内存模型</a>
+    <h1 class="article-title" itemprop="name">
+      SpringAOP
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/16/SpringAOP/" class="archive-article-date">
+        
+        <a href="/2026/03/16/SpringAOP/" class="archive-article-date">
   	<time datetime="2026-03-16T15:48:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-16</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/16/SpringAOP/">SpringAOP</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当面试官让你“讲讲 Spring AOP”，这是一个<strong>开放性但非常经典的问题</strong>，考察你对 Spring 核心机制的理解深度。回答时建议采用 <strong>“总—分—总”结构</strong>：先定义，再讲原理、核心概念、实现方式，最后结合使用场景和注意事项。</p>
+<p>下面是一个<strong>清晰、有层次、体现理解深度</strong>的回答模板，适合 1~3 年经验的开发者（可根据自身水平调整技术细节）：</p>
+<hr>
+<h3 id="✅-推荐回答（约-2-3-分钟）："><a href="#✅-推荐回答（约-2-3-分钟）：" class="headerlink" title="✅ 推荐回答（约 2~3 分钟）："></a>✅ 推荐回答（约 2~3 分钟）：</h3><blockquote>
+<p>“Spring AOP（Aspect-Oriented Programming，面向切面编程）是 Spring 框架提供的一个核心模块，用于<strong>将横切关注点（cross-cutting concerns）从业务逻辑中解耦出来</strong>。比如日志记录、事务管理、权限校验、性能监控等，这些功能往往散布在多个业务方法中，如果直接写在业务代码里，会导致代码重复、难以维护。AOP 就是为了解决这个问题。”</p>
+</blockquote>
+<blockquote>
+<p>“它的核心思想是<strong>代理模式</strong>。Spring AOP 默认使用 <strong>JDK 动态代理</strong>（当目标对象实现了接口时），或者 <strong>CGLIB 代理</strong>（当目标类没有实现接口时），在运行时为目标对象生成代理对象，在不修改源码的情况下，<strong>在方法调用前后插入额外逻辑</strong>。”</p>
+</blockquote>
+<blockquote>
+<p>“Spring AOP 有几个关键概念：</p>
+<ul>
+<li><strong>Aspect（切面）</strong>：横切关注点的模块化，通常是一个带有 <code>@Aspect</code> 注解的类；</li>
+<li><strong>Join Point（连接点）</strong>：程序执行过程中的某个特定点，比如方法调用。在 Spring AOP 中，<strong>连接点始终是方法执行</strong>；</li>
+<li><strong>Advice（通知）</strong>：在连接点执行的动作，比如 <code>@Before</code>、<code>@After</code>、<code>@Around</code> 等；</li>
+<li><strong>Pointcut（切入点）</strong>：匹配连接点的表达式，决定哪些方法要被拦截，比如 <code>execution(* com.service.*.*(..))</code>；</li>
+<li><strong>Weaving（织入）</strong>：把切面应用到目标对象并创建代理对象的过程，Spring 是在<strong>运行时织入</strong>的。”</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>“举个例子：我想给所有 Service 层的方法加上日志，就可以定义一个切面类，用 <code>@Around</code> 包裹方法执行，记录入参、返回值和耗时。这样业务代码完全感知不到日志逻辑，符合单一职责原则。”</p>
+</blockquote>
+<blockquote>
+<p>“需要注意的是：<strong>Spring AOP 是基于代理的，所以只有通过 Spring 容器调用的方法才能被拦截</strong>。比如同一个类中方法 A 调用方法 B，而 B 上有 <code>@Transactional</code> 或 AOP 注解，这个注解是不会生效的——因为这是直接调用，没经过代理对象。”</p>
+</blockquote>
+<blockquote>
+<p>“另外，Spring AOP 和 AspectJ 的区别也常被问到：Spring AOP 是运行时代理，功能较简单但够用；AspectJ 是编译期&#x2F;加载期织入，功能更强大（支持字段、构造器等切点），但更复杂。Spring 默认集成的是自己的 AOP，也可以整合 AspectJ。”</p>
+</blockquote>
+<hr>
+<h3 id="🔍-面试加分点（根据面试官反应可选补充）："><a href="#🔍-面试加分点（根据面试官反应可选补充）：" class="headerlink" title="🔍 面试加分点（根据面试官反应可选补充）："></a>🔍 面试加分点（根据面试官反应可选补充）：</h3><ul>
+<li><strong>事务就是基于 AOP 实现的</strong>：<code>@Transactional</code> 本质是一个 <code>@Around</code> 通知，开启&#x2F;提交&#x2F;回滚事务。</li>
+<li><strong>AOP 的执行顺序</strong>：如果有多个切面，可以用 <code>@Order</code> 控制优先级。</li>
+<li><strong>性能影响</strong>：代理会带来轻微开销，但通常可忽略；避免在高频小方法上滥用 AOP。</li>
+<li><strong>自调用问题解决方案</strong>：可以通过 <code>AopContext.currentProxy()</code> 强制走代理，但不推荐；更好的方式是拆分类或重构逻辑。</li>
+</ul>
+<hr>
+<h3 id="❌-避免的错误回答："><a href="#❌-避免的错误回答：" class="headerlink" title="❌ 避免的错误回答："></a>❌ 避免的错误回答：</h3><ul>
+<li>❌ 只说“AOP 就是动态代理”——太浅，没讲清楚 Spring 如何用它解决实际问题。</li>
+<li>❌ 混淆 AOP 和 OOP——不要说“AOP 替代 OOP”，应该说“AOP 补充 OOP”。</li>
+<li>❌ 说“Spring AOP 用的是 AspectJ”——默认不是！除非你显式引入了 <code>aspectjweaver</code> 并配置了 load-time weaving。</li>
+</ul>
+<hr>
+<h3 id="💡-总结一句话收尾："><a href="#💡-总结一句话收尾：" class="headerlink" title="💡 总结一句话收尾："></a>💡 总结一句话收尾：</h3><blockquote>
+<p>“总之，Spring AOP 让我们能以声明式的方式统一处理系统级服务，极大提升了代码的内聚性和可维护性，是 Spring 实现‘非侵入式’设计的关键技术之一。”</p>
+</blockquote>
+<hr>
+<p>这样的回答既展示了<strong>基础知识</strong>，又体现了<strong>实践经验</strong>和<strong>思考深度</strong>，大概率会让面试官点头 😊</p>
+<p>如果你有具体项目经验（比如用 AOP 做过日志、限流、缓存），可以加一句：“我在上个项目中就用 AOP 实现了统一异常处理和操作日志记录……” —— 这会非常加分！</p>
 
-        <div class="article-info info-on-right">
-          
-          
+      
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2026/03/16/SpringAOP/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/15/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" class="archive-article-date">
-  	<time datetime="2026-03-15T09:31:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-15</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2026/03/16/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          JVM内存模型
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/03/15/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">&#39;redis分布式锁&#39;</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/15/redis%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81/">&#39;redis分布式锁&#39;</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/12/%E4%BA%8B%E7%89%A9%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/" class="archive-article-date">
-  	<time datetime="2026-03-12T13:05:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-12</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/12/%E4%BA%8B%E7%89%A9%E7%9A%84%E9%9A%94%E7%A6%BB%E7%BA%A7%E5%88%AB/">&#39;事物的隔离级别&#39;</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/12/post%E5%92%8Cget%E8%AF%B7%E6%B1%82/" class="archive-article-date">
-  	<time datetime="2026-03-12T04:39:21.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-12</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/12/post%E5%92%8Cget%E8%AF%B7%E6%B1%82/">&#39;post和get请求&#39;</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/11/redis/" class="archive-article-date">
-  	<time datetime="2026-03-11T10:22:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-11</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/11/redis/">&#39;redis&#39;</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/10/%E7%AC%AC%E4%B8%80%E5%A4%A9-1/" class="archive-article-date">
-  	<time datetime="2026-03-10T10:16:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-10</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/10/%E7%AC%AC%E4%B8%80%E5%A4%A9-1/">第一天</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/05/Jwtutils/" class="archive-article-date">
-  	<time datetime="2026-03-05T14:03:46.922Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-05</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/03/spring%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/" class="archive-article-date">
-  	<time datetime="2026-03-03T10:10:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/03/spring%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/">spring常见概念</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -425,8 +382,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

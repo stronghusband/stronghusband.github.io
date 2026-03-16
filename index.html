@@ -152,6 +152,204 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-JVM内存模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2026/03/16/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">JVM内存模型</a>
+    </h1>
+  
+
+        
+        <a href="/2026/03/16/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="archive-article-date">
+  	<time datetime="2026-03-16T15:48:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>JVM（Java Virtual Machine）内存模型是 Java 面试中的高频“八股”考点，它描述了 Java 程序在运行时数据的存储区域划分，以及 线程之间如何通过主内存和工作内存进行通信。注意：这里有两个容易混淆的概念：</p>
+<p>JVM 运行时数据区（Runtime Data Areas）：这是 JVM 规范定义的内存分区（如堆、栈等），用于管理程序运行时的数据。<br>Java 内存模型（Java Memory Model, JMM）：这是关于多线程可见性、有序性、原子性的抽象规范，定义了线程如何与主内存交互。</p>
+<p>下面分别讲解，重点突出面试常考内容。</p>
+<p>一、JVM 运行时数据区（内存结构）</p>
+<p>这是大家常说的“JVM 内存模型”的实际含义（虽然严格来说不准确，但面试中通常指这个）。</p>
+<p>+———————+<br>|     Method Area     | ← 类信息、常量、静态变量、JIT代码等（JDK8后叫 Metaspace）<br>+———————+<br>|      Heap (堆)      | ← 几乎所有对象实例 + 数组（GC 主战场，线程共享）<br>+———————+<br>|   VM Stack (虚拟机栈)| ← 每个线程私有，存储局部变量、方法调用（栈帧）<br>+———————+<br>Native Method</p>
+<p>|        Stack        | ← 本地方法（如 JNI）使用的栈<br>+———————+<br>|       PC Register   | ← 程序计数器，记录当前线程执行的字节码行号<br>+———————+</p>
+<p>堆（Heap）—— 线程共享<br>存放几乎所有对象实例和数组。<br>是垃圾回收的主要区域（新生代 + 老年代）。<br>可通过 -Xms（初始堆大小）、-Xmx（最大堆大小）调整。</p>
+<p>✅ 面试高频问：<br>“new Object() 创建的对象一定在堆上吗？”<br>→ 不一定！ 如果开启逃逸分析（Escape Analysis），JVM 可能将对象分配到栈上（栈上分配）或直接标量替换，避免堆分配。</p>
+<p>虚拟机栈（VM Stack）—— 线程私有<br>每个线程创建时都会创建一个栈，生命周期与线程一致。<br>每调用一个方法，就压入一个 栈帧（Stack Frame），包含：<br>  局部变量表（Local Variables）<br>  操作数栈（Operand Stack）<br>  动态链接（指向运行时常量池的方法引用）<br>  方法返回地址<br>栈溢出：StackOverflowError（递归太深）；栈扩展失败：OutOfMemoryError</p>
+<p>本地方法栈（Native Method Stack）<br>为 Native 方法（如 C&#x2F;C++ 编写的 JNI 方法）服务。<br>HotSpot 虚拟机将其与 Java 虚拟机栈合二为一。</p>
+<p>程序计数器（PC Register）—— 线程私有<br>记录当前线程正在执行的字节码指令地址。<br>是唯一不会发生 OutOfMemoryError 的区域。</p>
+<p>方法区（Method Area） &#x2F; 元空间（Metaspace）<br>存储：类结构信息、字段&#x2F;方法数据、常量、静态变量、JIT 编译后的代码等。<br>JDK 7：字符串常量池还在永久代（PermGen）<br>JDK 8+：永久代被移除，改用 Metaspace（元空间），使用本地内存（Native Memory），不再受 JVM 堆大小限制。<br>GC 会回收废弃的常量和无用的类（但条件苛刻）。</p>
+<p>✅ 面试高频问：<br>“JDK8 为什么用 Metaspace 替代 PermGen？”<br>→ 避免 java.lang.OutOfMemoryError: PermGen space，提升性能和灵活性。</p>
+<p>二、Java 内存模型（JMM）—— 多线程视角</p>
+<p>JMM 是一个抽象规范，定义了线程如何与内存交互，解决可见性、有序性、原子性问题。</p>
+<p>核心概念：<br>主内存（Main Memory）：所有线程共享，存储变量（如实例字段、静态字段）。<br>工作内存（Working Memory）：每个线程私有，保存该线程使用到的变量的副本。<br>线程对变量的所有操作（读&#x2F;写）都必须在工作内存中进行，不能直接读写主内存。</p>
+<p>三大特性：<br>特性   问题   解决方案<br>原子性   i++ 不是原子操作   synchronized &#x2F; Lock &#x2F; AtomicInteger</p>
+<p>可见性   线程A修改变量，线程B看不到   volatile &#x2F; synchronized &#x2F; final</p>
+<p>有序性   指令重排序导致逻辑错误   volatile &#x2F; synchronized &#x2F; happens-before 原则</p>
+<p>happens-before 原则（重点！）<br>JMM 通过 happens-before 关系保证跨线程的内存可见性，常见规则：<br>程序顺序规则：同一个线程内，前面的操作 happens-before 后面的操作。<br>监视器锁规则：对一个锁的解锁 happens-before 后续对这个锁的加锁。<br>volatile 变量规则：对 volatile 变量的写 happens-before 后续对该变量的读。<br>线程启动规则：Thread.start() happens-before 线程中的任何操作。<br>线程 join 规则：线程中的所有操作 happens-before join() 返回。</p>
+<p>✅ 面试高频问：<br>“volatile 能保证原子性吗？”<br>→ 不能！ 它只保证可见性 + 禁止指令重排序，但像 i++ 这种复合操作仍需加锁。</p>
+<p>三、总结口诀（便于记忆）</p>
+<p><strong>堆存对象，栈存方法；<br>方法区里存类家；<br>PC 计数各管各，<br>本地栈给 JNI 用。<br>JMM 主存+工作，<br>volatile 可见禁重排，<br>synchronized 保三性，<br>happens-before 定乾坤。</strong></p>
+<p>如果你正在准备面试，建议：<br>能手绘 JVM 内存结构图；<br>能对比 JDK7 和 JDK8 方法区变化；<br>能解释 volatile 和 synchronized 的底层原理（如内存屏障、lock 前缀指令）。</p>
+<p>需要我帮你整理 JVM 相关的 Anki 卡片或高频面试题清单吗？</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2026/03/16/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-SpringAOP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2026/03/16/SpringAOP/">SpringAOP</a>
+    </h1>
+  
+
+        
+        <a href="/2026/03/16/SpringAOP/" class="archive-article-date">
+  	<time datetime="2026-03-16T15:48:04.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-16</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当面试官让你“讲讲 Spring AOP”，这是一个<strong>开放性但非常经典的问题</strong>，考察你对 Spring 核心机制的理解深度。回答时建议采用 <strong>“总—分—总”结构</strong>：先定义，再讲原理、核心概念、实现方式，最后结合使用场景和注意事项。</p>
+<p>下面是一个<strong>清晰、有层次、体现理解深度</strong>的回答模板，适合 1~3 年经验的开发者（可根据自身水平调整技术细节）：</p>
+<hr>
+<h3 id="✅-推荐回答（约-2-3-分钟）："><a href="#✅-推荐回答（约-2-3-分钟）：" class="headerlink" title="✅ 推荐回答（约 2~3 分钟）："></a>✅ 推荐回答（约 2~3 分钟）：</h3><blockquote>
+<p>“Spring AOP（Aspect-Oriented Programming，面向切面编程）是 Spring 框架提供的一个核心模块，用于<strong>将横切关注点（cross-cutting concerns）从业务逻辑中解耦出来</strong>。比如日志记录、事务管理、权限校验、性能监控等，这些功能往往散布在多个业务方法中，如果直接写在业务代码里，会导致代码重复、难以维护。AOP 就是为了解决这个问题。”</p>
+</blockquote>
+<blockquote>
+<p>“它的核心思想是<strong>代理模式</strong>。Spring AOP 默认使用 <strong>JDK 动态代理</strong>（当目标对象实现了接口时），或者 <strong>CGLIB 代理</strong>（当目标类没有实现接口时），在运行时为目标对象生成代理对象，在不修改源码的情况下，<strong>在方法调用前后插入额外逻辑</strong>。”</p>
+</blockquote>
+<blockquote>
+<p>“Spring AOP 有几个关键概念：</p>
+<ul>
+<li><strong>Aspect（切面）</strong>：横切关注点的模块化，通常是一个带有 <code>@Aspect</code> 注解的类；</li>
+<li><strong>Join Point（连接点）</strong>：程序执行过程中的某个特定点，比如方法调用。在 Spring AOP 中，<strong>连接点始终是方法执行</strong>；</li>
+<li><strong>Advice（通知）</strong>：在连接点执行的动作，比如 <code>@Before</code>、<code>@After</code>、<code>@Around</code> 等；</li>
+<li><strong>Pointcut（切入点）</strong>：匹配连接点的表达式，决定哪些方法要被拦截，比如 <code>execution(* com.service.*.*(..))</code>；</li>
+<li><strong>Weaving（织入）</strong>：把切面应用到目标对象并创建代理对象的过程，Spring 是在<strong>运行时织入</strong>的。”</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>“举个例子：我想给所有 Service 层的方法加上日志，就可以定义一个切面类，用 <code>@Around</code> 包裹方法执行，记录入参、返回值和耗时。这样业务代码完全感知不到日志逻辑，符合单一职责原则。”</p>
+</blockquote>
+<blockquote>
+<p>“需要注意的是：<strong>Spring AOP 是基于代理的，所以只有通过 Spring 容器调用的方法才能被拦截</strong>。比如同一个类中方法 A 调用方法 B，而 B 上有 <code>@Transactional</code> 或 AOP 注解，这个注解是不会生效的——因为这是直接调用，没经过代理对象。”</p>
+</blockquote>
+<blockquote>
+<p>“另外，Spring AOP 和 AspectJ 的区别也常被问到：Spring AOP 是运行时代理，功能较简单但够用；AspectJ 是编译期&#x2F;加载期织入，功能更强大（支持字段、构造器等切点），但更复杂。Spring 默认集成的是自己的 AOP，也可以整合 AspectJ。”</p>
+</blockquote>
+<hr>
+<h3 id="🔍-面试加分点（根据面试官反应可选补充）："><a href="#🔍-面试加分点（根据面试官反应可选补充）：" class="headerlink" title="🔍 面试加分点（根据面试官反应可选补充）："></a>🔍 面试加分点（根据面试官反应可选补充）：</h3><ul>
+<li><strong>事务就是基于 AOP 实现的</strong>：<code>@Transactional</code> 本质是一个 <code>@Around</code> 通知，开启&#x2F;提交&#x2F;回滚事务。</li>
+<li><strong>AOP 的执行顺序</strong>：如果有多个切面，可以用 <code>@Order</code> 控制优先级。</li>
+<li><strong>性能影响</strong>：代理会带来轻微开销，但通常可忽略；避免在高频小方法上滥用 AOP。</li>
+<li><strong>自调用问题解决方案</strong>：可以通过 <code>AopContext.currentProxy()</code> 强制走代理，但不推荐；更好的方式是拆分类或重构逻辑。</li>
+</ul>
+<hr>
+<h3 id="❌-避免的错误回答："><a href="#❌-避免的错误回答：" class="headerlink" title="❌ 避免的错误回答："></a>❌ 避免的错误回答：</h3><ul>
+<li>❌ 只说“AOP 就是动态代理”——太浅，没讲清楚 Spring 如何用它解决实际问题。</li>
+<li>❌ 混淆 AOP 和 OOP——不要说“AOP 替代 OOP”，应该说“AOP 补充 OOP”。</li>
+<li>❌ 说“Spring AOP 用的是 AspectJ”——默认不是！除非你显式引入了 <code>aspectjweaver</code> 并配置了 load-time weaving。</li>
+</ul>
+<hr>
+<h3 id="💡-总结一句话收尾："><a href="#💡-总结一句话收尾：" class="headerlink" title="💡 总结一句话收尾："></a>💡 总结一句话收尾：</h3><blockquote>
+<p>“总之，Spring AOP 让我们能以声明式的方式统一处理系统级服务，极大提升了代码的内聚性和可维护性，是 Spring 实现‘非侵入式’设计的关键技术之一。”</p>
+</blockquote>
+<hr>
+<p>这样的回答既展示了<strong>基础知识</strong>，又体现了<strong>实践经验</strong>和<strong>思考深度</strong>，大概率会让面试官点头 😊</p>
+<p>如果你有具体项目经验（比如用 AOP 做过日志、限流、缓存），可以加一句：“我在上个项目中就用 AOP 实现了统一异常处理和操作日志记录……” —— 这会非常加分！</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2026/03/16/SpringAOP/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-redis分布式锁" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1462,146 +1660,10 @@
 
 
   
-    <article id="post-我的第一篇文章AOP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2026/02/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0AOP/">我的第一篇文章AOP</a>
-    </h1>
-  
-
-        
-        <a href="/2026/02/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0AOP/" class="archive-article-date">
-  	<time datetime="2026-02-27T14:13:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-02-27</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Spring Aop</p>
-<p>Spring AOP（Aspect-Oriented Programming，面向切面编程）是 Spring 框架的核心功能之一。<br>重点：主要目的是将那些与业务无关，却为业务模块所共同调用的逻辑（例如事务处理、日志管理、权限控制等）封装起来，便于减少系统的重复代码，降低模块间的耦合度，<br>有利于未来的可扩展性和可维护性<br>例子：</p>
-<p><img src="/images/SpringAOP.png" alt="Spring AOP 架构图"><br>这是一个苍穹外卖项目的AOP图<br>他的作用是自动填充创建时间、更新时间、创建人、更新人等字段，避免在每个业务方法中重复编写相同的代码。<br>重点：代码的重要组成部分（注解、切点、通知、切面）<br>@Aspect: 表示当前类是一个切面类<br>@Component: 表示当前类被Spring管理<br>@Pointcut(“execution(* com.sky.mapper.<em>.</em>(..))”): 表示当前类的所有方法都是切点<br>@Before(“execution(* com.sky.mapper.<em>.</em>(..))”): 表示在切点方法之前执行</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2026/02/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0AOP/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2025/11/18/hello-world/">Hello World</a>
-    </h1>
-  
-
-        
-        <a href="/2025/11/18/hello-world/" class="archive-article-date">
-  	<time datetime="2025-11-17T17:04:37.214Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-11-18</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2025/11/18/hello-world/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    </nav>
   
 
 
