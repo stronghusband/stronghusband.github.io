@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>JVM内存模型 | Hexo</title>
+  <title>String StringBuild StringBuffer区别 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="JVM（Java Virtual Machine）内存模型是 Java 面试中的高频“八股”考点，它描述了 Java 程序在运行时数据的存储区域划分，以及 线程之间如何通过主内存和工作内存进行通信。注意：这里有两个容易混淆的概念： JVM 运行时数据区（Runtime Data Areas）：这是 JVM 规范定义的内存分区（如堆、栈等），用于管理程序运行时的数据。Java 内存模型（Java M">
+  <meta name="description" content="这三个类都是 Java 中处理字符串的核心类，但它们的可变性、线程安全性、性能有显著区别。 1. 可变性 String：不可变。一旦创建，其值不能被改变。任何修改操作（如拼接、替换）都会创建一个新的 String 对象。 StringBuilder：可变。可以在原对象上进行修改，不会创建新对象。 StringBuffer：可变。与 StringBuilder 类似，可以在原对象上修改。  2. 线">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JVM内存模型">
-<meta property="og:url" content="http://example.com/2026/03/16/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/index.html">
+<meta property="og:title" content="String StringBuild StringBuffer区别">
+<meta property="og:url" content="http://example.com/2026/03/27/String-StringBuild-StringBuffer%E5%8C%BA%E5%88%AB/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="JVM（Java Virtual Machine）内存模型是 Java 面试中的高频“八股”考点，它描述了 Java 程序在运行时数据的存储区域划分，以及 线程之间如何通过主内存和工作内存进行通信。注意：这里有两个容易混淆的概念： JVM 运行时数据区（Runtime Data Areas）：这是 JVM 规范定义的内存分区（如堆、栈等），用于管理程序运行时的数据。Java 内存模型（Java M">
+<meta property="og:description" content="这三个类都是 Java 中处理字符串的核心类，但它们的可变性、线程安全性、性能有显著区别。 1. 可变性 String：不可变。一旦创建，其值不能被改变。任何修改操作（如拼接、替换）都会创建一个新的 String 对象。 StringBuilder：可变。可以在原对象上进行修改，不会创建新对象。 StringBuffer：可变。与 StringBuilder 类似，可以在原对象上修改。  2. 线">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2026-03-16T15:48:25.000Z">
-<meta property="article:modified_time" content="2026-03-16T15:48:52.206Z">
+<meta property="article:published_time" content="2026-03-27T12:18:47.000Z">
+<meta property="article:modified_time" content="2026-03-27T12:19:31.218Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -154,52 +154,107 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-JVM内存模型" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-String-StringBuild-StringBuffer区别" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      JVM内存模型
+      String StringBuild StringBuffer区别
     </h1>
   
 
         
-        <a href="/2026/03/16/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" class="archive-article-date">
-  	<time datetime="2026-03-16T15:48:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-16</time>
+        <a href="/2026/03/27/String-StringBuild-StringBuffer%E5%8C%BA%E5%88%AB/" class="archive-article-date">
+  	<time datetime="2026-03-27T12:18:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-27</time>
 </a>
         
       </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>JVM（Java Virtual Machine）内存模型是 Java 面试中的高频“八股”考点，它描述了 Java 程序在运行时数据的存储区域划分，以及 线程之间如何通过主内存和工作内存进行通信。注意：这里有两个容易混淆的概念：</p>
-<p>JVM 运行时数据区（Runtime Data Areas）：这是 JVM 规范定义的内存分区（如堆、栈等），用于管理程序运行时的数据。<br>Java 内存模型（Java Memory Model, JMM）：这是关于多线程可见性、有序性、原子性的抽象规范，定义了线程如何与主内存交互。</p>
-<p>下面分别讲解，重点突出面试常考内容。</p>
-<p>一、JVM 运行时数据区（内存结构）</p>
-<p>这是大家常说的“JVM 内存模型”的实际含义（虽然严格来说不准确，但面试中通常指这个）。</p>
-<p>+———————+<br>|     Method Area     | ← 类信息、常量、静态变量、JIT代码等（JDK8后叫 Metaspace）<br>+———————+<br>|      Heap (堆)      | ← 几乎所有对象实例 + 数组（GC 主战场，线程共享）<br>+———————+<br>|   VM Stack (虚拟机栈)| ← 每个线程私有，存储局部变量、方法调用（栈帧）<br>+———————+<br>Native Method</p>
-<p>|        Stack        | ← 本地方法（如 JNI）使用的栈<br>+———————+<br>|       PC Register   | ← 程序计数器，记录当前线程执行的字节码行号<br>+———————+</p>
-<p>堆（Heap）—— 线程共享<br>存放几乎所有对象实例和数组。<br>是垃圾回收的主要区域（新生代 + 老年代）。<br>可通过 -Xms（初始堆大小）、-Xmx（最大堆大小）调整。</p>
-<p>✅ 面试高频问：<br>“new Object() 创建的对象一定在堆上吗？”<br>→ 不一定！ 如果开启逃逸分析（Escape Analysis），JVM 可能将对象分配到栈上（栈上分配）或直接标量替换，避免堆分配。</p>
-<p>虚拟机栈（VM Stack）—— 线程私有<br>每个线程创建时都会创建一个栈，生命周期与线程一致。<br>每调用一个方法，就压入一个 栈帧（Stack Frame），包含：<br>  局部变量表（Local Variables）<br>  操作数栈（Operand Stack）<br>  动态链接（指向运行时常量池的方法引用）<br>  方法返回地址<br>栈溢出：StackOverflowError（递归太深）；栈扩展失败：OutOfMemoryError</p>
-<p>本地方法栈（Native Method Stack）<br>为 Native 方法（如 C&#x2F;C++ 编写的 JNI 方法）服务。<br>HotSpot 虚拟机将其与 Java 虚拟机栈合二为一。</p>
-<p>程序计数器（PC Register）—— 线程私有<br>记录当前线程正在执行的字节码指令地址。<br>是唯一不会发生 OutOfMemoryError 的区域。</p>
-<p>方法区（Method Area） &#x2F; 元空间（Metaspace）<br>存储：类结构信息、字段&#x2F;方法数据、常量、静态变量、JIT 编译后的代码等。<br>JDK 7：字符串常量池还在永久代（PermGen）<br>JDK 8+：永久代被移除，改用 Metaspace（元空间），使用本地内存（Native Memory），不再受 JVM 堆大小限制。<br>GC 会回收废弃的常量和无用的类（但条件苛刻）。</p>
-<p>✅ 面试高频问：<br>“JDK8 为什么用 Metaspace 替代 PermGen？”<br>→ 避免 java.lang.OutOfMemoryError: PermGen space，提升性能和灵活性。</p>
-<p>二、Java 内存模型（JMM）—— 多线程视角</p>
-<p>JMM 是一个抽象规范，定义了线程如何与内存交互，解决可见性、有序性、原子性问题。</p>
-<p>核心概念：<br>主内存（Main Memory）：所有线程共享，存储变量（如实例字段、静态字段）。<br>工作内存（Working Memory）：每个线程私有，保存该线程使用到的变量的副本。<br>线程对变量的所有操作（读&#x2F;写）都必须在工作内存中进行，不能直接读写主内存。</p>
-<p>三大特性：<br>特性   问题   解决方案<br>原子性   i++ 不是原子操作   synchronized &#x2F; Lock &#x2F; AtomicInteger</p>
-<p>可见性   线程A修改变量，线程B看不到   volatile &#x2F; synchronized &#x2F; final</p>
-<p>有序性   指令重排序导致逻辑错误   volatile &#x2F; synchronized &#x2F; happens-before 原则</p>
-<p>happens-before 原则（重点！）<br>JMM 通过 happens-before 关系保证跨线程的内存可见性，常见规则：<br>程序顺序规则：同一个线程内，前面的操作 happens-before 后面的操作。<br>监视器锁规则：对一个锁的解锁 happens-before 后续对这个锁的加锁。<br>volatile 变量规则：对 volatile 变量的写 happens-before 后续对该变量的读。<br>线程启动规则：Thread.start() happens-before 线程中的任何操作。<br>线程 join 规则：线程中的所有操作 happens-before join() 返回。</p>
-<p>✅ 面试高频问：<br>“volatile 能保证原子性吗？”<br>→ 不能！ 它只保证可见性 + 禁止指令重排序，但像 i++ 这种复合操作仍需加锁。</p>
-<p>三、总结口诀（便于记忆）</p>
-<p><strong>堆存对象，栈存方法；<br>方法区里存类家；<br>PC 计数各管各，<br>本地栈给 JNI 用。<br>JMM 主存+工作，<br>volatile 可见禁重排，<br>synchronized 保三性，<br>happens-before 定乾坤。</strong></p>
-<p>如果你正在准备面试，建议：<br>能手绘 JVM 内存结构图；<br>能对比 JDK7 和 JDK8 方法区变化；<br>能解释 volatile 和 synchronized 的底层原理（如内存屏障、lock 前缀指令）。</p>
-<p>需要我帮你整理 JVM 相关的 Anki 卡片或高频面试题清单吗？</p>
+        <p>这三个类都是 Java 中处理字符串的核心类，但它们的<strong>可变性、线程安全性、性能</strong>有显著区别。</p>
+<h2 id="1-可变性"><a href="#1-可变性" class="headerlink" title="1. 可变性"></a>1. 可变性</h2><ul>
+<li><strong>String</strong>：<strong>不可变</strong>。一旦创建，其值不能被改变。任何修改操作（如拼接、替换）都会创建一个新的 String 对象。</li>
+<li><strong>StringBuilder</strong>：<strong>可变</strong>。可以在原对象上进行修改，不会创建新对象。</li>
+<li><strong>StringBuffer</strong>：<strong>可变</strong>。与 StringBuilder 类似，可以在原对象上修改。</li>
+</ul>
+<h2 id="2-线程安全性"><a href="#2-线程安全性" class="headerlink" title="2. 线程安全性"></a>2. 线程安全性</h2><ul>
+<li><strong>String</strong>：<strong>线程安全</strong>。因为不可变，天然线程安全，可以在多线程环境下共享。</li>
+<li><strong>StringBuilder</strong>：<strong>线程不安全</strong>。方法没有同步锁，适合单线程环境。</li>
+<li><strong>StringBuffer</strong>：<strong>线程安全</strong>。关键方法都使用 <code>synchronized</code> 关键字修饰，保证多线程环境下的安全。</li>
+</ul>
+<h2 id="3-性能"><a href="#3-性能" class="headerlink" title="3. 性能"></a>3. 性能</h2><ul>
+<li><strong>String</strong>：<strong>最慢</strong>。每次修改都会创建新对象，频繁操作会产生大量临时对象，增加 GC 压力。</li>
+<li><strong>StringBuilder</strong>：<strong>最快</strong>。没有同步开销，性能最好。</li>
+<li><strong>StringBuffer</strong>：<strong>较慢</strong>。有同步开销，性能介于两者之间。</li>
+</ul>
+<h2 id="4-使用场景"><a href="#4-使用场景" class="headerlink" title="4. 使用场景"></a>4. 使用场景</h2><ul>
+<li><p><strong>String</strong>：</p>
+<ul>
+<li>字符串不需要频繁修改时</li>
+<li>作为 HashMap 的 key（因为不可变保证了 hash 值稳定）</li>
+<li>多线程环境下共享字符串常量</li>
+</ul>
+</li>
+<li><p><strong>StringBuilder</strong>：</p>
+<ul>
+<li><strong>单线程</strong>下频繁拼接、修改字符串</li>
+<li>循环中拼接字符串（比 String 的 <code>+</code> 效率高）</li>
+<li>大部分日常开发场景</li>
+</ul>
+</li>
+<li><p><strong>StringBuffer</strong>：</p>
+<ul>
+<li><strong>多线程</strong>环境下需要频繁修改字符串</li>
+<li>相比 StringBuilder 使用较少</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-示例代码"><a href="#5-示例代码" class="headerlink" title="5. 示例代码"></a>5. 示例代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// String - 每次拼接都创建新对象</span></span><br><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line">str += <span class="string">&quot; World&quot;</span>;  <span class="comment">// 实际创建了新的 String 对象</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// StringBuilder - 单线程推荐</span></span><br><span class="line"><span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">sb.append(<span class="string">&quot; World&quot;</span>);  <span class="comment">// 在原对象上修改</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// StringBuffer - 多线程安全</span></span><br><span class="line"><span class="type">StringBuffer</span> <span class="variable">sbf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">sbf.append(<span class="string">&quot; World&quot;</span>);  <span class="comment">// 线程安全，但有同步开销</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-常见面试点"><a href="#6-常见面试点" class="headerlink" title="6. 常见面试点"></a>6. 常见面试点</h2><ul>
+<li><p><strong>String 的 <code>+</code> 操作原理</strong>：编译器会将 <code>String</code> 的 <code>+</code> 操作优化为 <code>StringBuilder</code> 的 <code>append</code> 方法，但如果在循环中使用 <code>+</code>，每次循环都会创建新的 <code>StringBuilder</code>，效率很低。</p>
+</li>
+<li><p><strong>初始容量</strong>：<code>StringBuilder</code> 和 <code>StringBuffer</code> 默认容量为 16，可以根据需求预设容量避免扩容开销。</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>String</th>
+<th>StringBuilder</th>
+<th>StringBuffer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>可变性</td>
+<td>不可变</td>
+<td>可变</td>
+<td>可变</td>
+</tr>
+<tr>
+<td>线程安全</td>
+<td>安全</td>
+<td>不安全</td>
+<td>安全</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>低</td>
+<td>高</td>
+<td>中</td>
+</tr>
+<tr>
+<td>使用场景</td>
+<td>不常修改、共享</td>
+<td>单线程频繁修改</td>
+<td>多线程频繁修改</td>
+</tr>
+</tbody></table>
+<p><strong>建议</strong>：日常开发中，如果没有多线程需求，优先使用 <code>StringBuilder</code>；需要线程安全时使用 <code>StringBuffer</code>；字符串常量或少量拼接使用 <code>String</code>。</p>
 
       
 
@@ -279,7 +334,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2026/03/16/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2026/03/27/String-StringBuild-StringBuffer%E5%8C%BA%E5%88%AB/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -293,18 +348,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2026/03/27/String-StringBuild-StringBuffer%E5%8C%BA%E5%88%AB/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          String StringBuild StringBuffer区别
-        
-      </div>
-    </a>
   
-  
-    <a href="/2026/03/16/SpringAOP/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">SpringAOP</div>
+    <a href="/2026/03/16/JVM%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JVM内存模型</div>
       <i class="icon-circle-right"></i>
     </a>
   

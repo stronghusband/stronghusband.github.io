@@ -152,6 +152,149 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-String-StringBuild-StringBuffer区别" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2026/03/27/String-StringBuild-StringBuffer%E5%8C%BA%E5%88%AB/">String StringBuild StringBuffer区别</a>
+    </h1>
+  
+
+        
+        <a href="/2026/03/27/String-StringBuild-StringBuffer%E5%8C%BA%E5%88%AB/" class="archive-article-date">
+  	<time datetime="2026-03-27T12:18:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-27</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这三个类都是 Java 中处理字符串的核心类，但它们的<strong>可变性、线程安全性、性能</strong>有显著区别。</p>
+<h2 id="1-可变性"><a href="#1-可变性" class="headerlink" title="1. 可变性"></a>1. 可变性</h2><ul>
+<li><strong>String</strong>：<strong>不可变</strong>。一旦创建，其值不能被改变。任何修改操作（如拼接、替换）都会创建一个新的 String 对象。</li>
+<li><strong>StringBuilder</strong>：<strong>可变</strong>。可以在原对象上进行修改，不会创建新对象。</li>
+<li><strong>StringBuffer</strong>：<strong>可变</strong>。与 StringBuilder 类似，可以在原对象上修改。</li>
+</ul>
+<h2 id="2-线程安全性"><a href="#2-线程安全性" class="headerlink" title="2. 线程安全性"></a>2. 线程安全性</h2><ul>
+<li><strong>String</strong>：<strong>线程安全</strong>。因为不可变，天然线程安全，可以在多线程环境下共享。</li>
+<li><strong>StringBuilder</strong>：<strong>线程不安全</strong>。方法没有同步锁，适合单线程环境。</li>
+<li><strong>StringBuffer</strong>：<strong>线程安全</strong>。关键方法都使用 <code>synchronized</code> 关键字修饰，保证多线程环境下的安全。</li>
+</ul>
+<h2 id="3-性能"><a href="#3-性能" class="headerlink" title="3. 性能"></a>3. 性能</h2><ul>
+<li><strong>String</strong>：<strong>最慢</strong>。每次修改都会创建新对象，频繁操作会产生大量临时对象，增加 GC 压力。</li>
+<li><strong>StringBuilder</strong>：<strong>最快</strong>。没有同步开销，性能最好。</li>
+<li><strong>StringBuffer</strong>：<strong>较慢</strong>。有同步开销，性能介于两者之间。</li>
+</ul>
+<h2 id="4-使用场景"><a href="#4-使用场景" class="headerlink" title="4. 使用场景"></a>4. 使用场景</h2><ul>
+<li><p><strong>String</strong>：</p>
+<ul>
+<li>字符串不需要频繁修改时</li>
+<li>作为 HashMap 的 key（因为不可变保证了 hash 值稳定）</li>
+<li>多线程环境下共享字符串常量</li>
+</ul>
+</li>
+<li><p><strong>StringBuilder</strong>：</p>
+<ul>
+<li><strong>单线程</strong>下频繁拼接、修改字符串</li>
+<li>循环中拼接字符串（比 String 的 <code>+</code> 效率高）</li>
+<li>大部分日常开发场景</li>
+</ul>
+</li>
+<li><p><strong>StringBuffer</strong>：</p>
+<ul>
+<li><strong>多线程</strong>环境下需要频繁修改字符串</li>
+<li>相比 StringBuilder 使用较少</li>
+</ul>
+</li>
+</ul>
+<h2 id="5-示例代码"><a href="#5-示例代码" class="headerlink" title="5. 示例代码"></a>5. 示例代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// String - 每次拼接都创建新对象</span></span><br><span class="line"><span class="type">String</span> <span class="variable">str</span> <span class="operator">=</span> <span class="string">&quot;Hello&quot;</span>;</span><br><span class="line">str += <span class="string">&quot; World&quot;</span>;  <span class="comment">// 实际创建了新的 String 对象</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// StringBuilder - 单线程推荐</span></span><br><span class="line"><span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">sb.append(<span class="string">&quot; World&quot;</span>);  <span class="comment">// 在原对象上修改</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// StringBuffer - 多线程安全</span></span><br><span class="line"><span class="type">StringBuffer</span> <span class="variable">sbf</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuffer</span>(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">sbf.append(<span class="string">&quot; World&quot;</span>);  <span class="comment">// 线程安全，但有同步开销</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="6-常见面试点"><a href="#6-常见面试点" class="headerlink" title="6. 常见面试点"></a>6. 常见面试点</h2><ul>
+<li><p><strong>String 的 <code>+</code> 操作原理</strong>：编译器会将 <code>String</code> 的 <code>+</code> 操作优化为 <code>StringBuilder</code> 的 <code>append</code> 方法，但如果在循环中使用 <code>+</code>，每次循环都会创建新的 <code>StringBuilder</code>，效率很低。</p>
+</li>
+<li><p><strong>初始容量</strong>：<code>StringBuilder</code> 和 <code>StringBuffer</code> 默认容量为 16，可以根据需求预设容量避免扩容开销。</p>
+</li>
+</ul>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>String</th>
+<th>StringBuilder</th>
+<th>StringBuffer</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>可变性</td>
+<td>不可变</td>
+<td>可变</td>
+<td>可变</td>
+</tr>
+<tr>
+<td>线程安全</td>
+<td>安全</td>
+<td>不安全</td>
+<td>安全</td>
+</tr>
+<tr>
+<td>性能</td>
+<td>低</td>
+<td>高</td>
+<td>中</td>
+</tr>
+<tr>
+<td>使用场景</td>
+<td>不常修改、共享</td>
+<td>单线程频繁修改</td>
+<td>多线程频繁修改</td>
+</tr>
+</tbody></table>
+<p><strong>建议</strong>：日常开发中，如果没有多线程需求，优先使用 <code>StringBuilder</code>；需要线程安全时使用 <code>StringBuffer</code>；字符串常量或少量拼接使用 <code>String</code>。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2026/03/27/String-StringBuild-StringBuffer%E5%8C%BA%E5%88%AB/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-JVM内存模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1556,81 +1699,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2026/03/03/spring%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-常见注释" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/">常见注释</a>
-    </h1>
-  
-
-        
-        <a href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/" class="archive-article-date">
-  	<time datetime="2026-02-28T14:17:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-02-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>@RequestMapping<br>它的作用是：建立 HTTP 请求 URL 与 Java 控制器（Controller）方法之间的映射关系。<br>简单来说，就是告诉 Spring：“当用户访问某个特定的网址（URL）时，请执行这个 Java 方法。”<br>它可以用在类级别或方法级别。</p>
-<ul>
-<li>类级别：表示该类中的所有方法都共享同一个基础 URL。</li>
-<li>方法级别：表示仅对该方法生效，用于更精确的映射。</li>
-</ul>
-<h2 id="RestController"><a href="#RestController" class="headerlink" title="@RestController"></a>@RestController</h2><p>作用：这是一个组合注解，相当于@Controller + @ResponseBody<br>用途：用于标记一个类为 REST 风格的控制器，该类中的所有方法返回的数据（如字符串、对象等）会自动被序列化为 JSON（或 XML 等格式），并直接写入 HTTP 响应体中，而不是返回视图名称（如 JSP 页面）。</p>
-<h2 id="Bean"><a href="#Bean" class="headerlink" title="@Bean"></a>@Bean</h2><p>主要作用是告诉 Spring 容器：“这个方法返回的对象，请把它作为一个 Bean（组件）管理起来，放入 Spring 的 IOC 容器中。<br>通常，我们使用 @Component、@Service、@Controller 等注解让 Spring 自动扫描并注册类。但是，当你无法修改源代码（例如第三方库的类），或者需要自定义复杂的初始化逻辑时，就需要使用 @Bean</p>
-<ul>
-<li>| 特性       | <code>@Component</code> (及衍生注解)      | <code>@Bean</code> |<br>| 所属类     | 直接标注在类上                 | 标注在方法上 (通常在配置类中) |<br>| 控制力     | Spring 自动实例化，控制较少     | 完全由你控制实例化过程 (可以调用构造函数、设置属性等) |<br>|适用对象    | 自己写的代码 (能修改源码)        | 第三方库的类、需要复杂配置的对象 |<br>| 底层原理   | 类路径扫描 (Classpath Scanning)| 执行配置类中的方法 |</li>
-<li>. 工作原理详解<br>启动时扫描：Spring 容器启动时，会扫描所有带有 @Configuration 的类。<br>执行方法：它会执行这些类中所有带有 @Bean 注解的方法。<br>注册容器：将这些方法返回的对象实例注册到 Spring IOC 容器中。<br>单例管理：默认情况下，@Bean 创建的对象是单例 (Singleton) 的。如果在其他 Bean 中注入该对象，Spring 会直接复用第一次创建的那个实例。</li>
-</ul>
-<p>配置类@Configuration<br>A. 定义 Bean（替代 <bean> 标签）<br>在配置类中，你可以通过 @Bean 注解标记方法，该方法的返回值对象就会被注册到 Spring 容器中，成为一个 Bean。<br>疑惑 3：它和 @Component (组件扫描) 有什么关系？<br>这是最容易晕的地方。<br>@Component &#x2F; @Service &#x2F; @Controller：<br>用于业务类。比如 UserService, OrderController。<br>意思是：“这个类本身就是一个 Bean，请把它注册进去。”<br>Spring 直接把这个类实例化。<br>@Configuration + @Bean：<br>用于第三方类或复杂创建逻辑。比如 DataSource (数据库连接池), RedisTemplate。<br>这些类是别人写的库，你没法给它们加 @Component 注解。<br>意思是：“这个类是个工厂，请运行它里面的 @Bean 方法，把方法的返回值注册为 Bean。”</p>
-<p>A. @Bean 方法（工厂模式）<br>定义：在 @Configuration 类中，标有 @Bean 的方法。<br>作用：告诉 Spring，“请执行这个方法，把返回值注册为 Bean”。<br>触发时机：Spring 容器启动刷新阶段，扫描配置类时，主动执行所有 @Bean 方法。<br>B. 接口回调方法（观察者&#x2F;策略模式）<br>定义：你的配置类实现了某个特定的接口（如 WebMvcConfigurer），并重写了其中的方法（如 addInterceptors）。<br>作用：这是 Spring 定义的“扩展点”（Extension Point）。意思是：“如果你对这个默认行为不满意，可以重写这个方法来自定义。”<br>触发时机：Spring MVC 初始化过程中，会查找所有实现了 WebMvcConfigurer 接口的 Bean，然后主动调用它们的 addInterceptors 方法，把注册表（InterceptorRegistry）传进去。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/">展开全文 >></a>
         </p>
       
 

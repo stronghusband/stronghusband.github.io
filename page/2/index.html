@@ -152,6 +152,81 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-常见注释" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/">常见注释</a>
+    </h1>
+  
+
+        
+        <a href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/" class="archive-article-date">
+  	<time datetime="2026-02-28T14:17:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-02-28</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>@RequestMapping<br>它的作用是：建立 HTTP 请求 URL 与 Java 控制器（Controller）方法之间的映射关系。<br>简单来说，就是告诉 Spring：“当用户访问某个特定的网址（URL）时，请执行这个 Java 方法。”<br>它可以用在类级别或方法级别。</p>
+<ul>
+<li>类级别：表示该类中的所有方法都共享同一个基础 URL。</li>
+<li>方法级别：表示仅对该方法生效，用于更精确的映射。</li>
+</ul>
+<h2 id="RestController"><a href="#RestController" class="headerlink" title="@RestController"></a>@RestController</h2><p>作用：这是一个组合注解，相当于@Controller + @ResponseBody<br>用途：用于标记一个类为 REST 风格的控制器，该类中的所有方法返回的数据（如字符串、对象等）会自动被序列化为 JSON（或 XML 等格式），并直接写入 HTTP 响应体中，而不是返回视图名称（如 JSP 页面）。</p>
+<h2 id="Bean"><a href="#Bean" class="headerlink" title="@Bean"></a>@Bean</h2><p>主要作用是告诉 Spring 容器：“这个方法返回的对象，请把它作为一个 Bean（组件）管理起来，放入 Spring 的 IOC 容器中。<br>通常，我们使用 @Component、@Service、@Controller 等注解让 Spring 自动扫描并注册类。但是，当你无法修改源代码（例如第三方库的类），或者需要自定义复杂的初始化逻辑时，就需要使用 @Bean</p>
+<ul>
+<li>| 特性       | <code>@Component</code> (及衍生注解)      | <code>@Bean</code> |<br>| 所属类     | 直接标注在类上                 | 标注在方法上 (通常在配置类中) |<br>| 控制力     | Spring 自动实例化，控制较少     | 完全由你控制实例化过程 (可以调用构造函数、设置属性等) |<br>|适用对象    | 自己写的代码 (能修改源码)        | 第三方库的类、需要复杂配置的对象 |<br>| 底层原理   | 类路径扫描 (Classpath Scanning)| 执行配置类中的方法 |</li>
+<li>. 工作原理详解<br>启动时扫描：Spring 容器启动时，会扫描所有带有 @Configuration 的类。<br>执行方法：它会执行这些类中所有带有 @Bean 注解的方法。<br>注册容器：将这些方法返回的对象实例注册到 Spring IOC 容器中。<br>单例管理：默认情况下，@Bean 创建的对象是单例 (Singleton) 的。如果在其他 Bean 中注入该对象，Spring 会直接复用第一次创建的那个实例。</li>
+</ul>
+<p>配置类@Configuration<br>A. 定义 Bean（替代 <bean> 标签）<br>在配置类中，你可以通过 @Bean 注解标记方法，该方法的返回值对象就会被注册到 Spring 容器中，成为一个 Bean。<br>疑惑 3：它和 @Component (组件扫描) 有什么关系？<br>这是最容易晕的地方。<br>@Component &#x2F; @Service &#x2F; @Controller：<br>用于业务类。比如 UserService, OrderController。<br>意思是：“这个类本身就是一个 Bean，请把它注册进去。”<br>Spring 直接把这个类实例化。<br>@Configuration + @Bean：<br>用于第三方类或复杂创建逻辑。比如 DataSource (数据库连接池), RedisTemplate。<br>这些类是别人写的库，你没法给它们加 @Component 注解。<br>意思是：“这个类是个工厂，请运行它里面的 @Bean 方法，把方法的返回值注册为 Bean。”</p>
+<p>A. @Bean 方法（工厂模式）<br>定义：在 @Configuration 类中，标有 @Bean 的方法。<br>作用：告诉 Spring，“请执行这个方法，把返回值注册为 Bean”。<br>触发时机：Spring 容器启动刷新阶段，扫描配置类时，主动执行所有 @Bean 方法。<br>B. 接口回调方法（观察者&#x2F;策略模式）<br>定义：你的配置类实现了某个特定的接口（如 WebMvcConfigurer），并重写了其中的方法（如 addInterceptors）。<br>作用：这是 Spring 定义的“扩展点”（Extension Point）。意思是：“如果你对这个默认行为不满意，可以重写这个方法来自定义。”<br>触发时机：Spring MVC 初始化过程中，会查找所有实现了 WebMvcConfigurer 接口的 Bean，然后主动调用它们的 addInterceptors 方法，把注册表（InterceptorRegistry）传进去。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-我的第一篇文章AOP" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
