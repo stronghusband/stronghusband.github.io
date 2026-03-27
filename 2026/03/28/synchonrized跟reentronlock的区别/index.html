@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://example.com">
-  <title>Archives | Hexo</title>
+  <title>synchonrized跟reentronlock的区别 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://example.com/archives/page/2/index.html">
+  <meta name="description" content="这个问题是Java并发编程中的经典面试题。我来为你系统地梳理一下JUC中的锁体系，以及synchronized和ReentrantLock的核心区别与实现原理。  一、JUC中的锁分类在java.util.concurrent（JUC）包下，锁可以按不同维度分类： 1. 按接口&#x2F;实现划分   类型 代表实现 特点    悲观锁 synchronized, ReentrantLock 假设">
+<meta property="og:type" content="article">
+<meta property="og:title" content="synchonrized跟reentronlock的区别">
+<meta property="og:url" content="http://example.com/2026/03/28/synchonrized%E8%B7%9Freentronlock%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="这个问题是Java并发编程中的经典面试题。我来为你系统地梳理一下JUC中的锁体系，以及synchronized和ReentrantLock的核心区别与实现原理。  一、JUC中的锁分类在java.util.concurrent（JUC）包下，锁可以按不同维度分类： 1. 按接口&#x2F;实现划分   类型 代表实现 特点    悲观锁 synchronized, ReentrantLock 假设">
 <meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2026-03-27T16:43:28.000Z">
+<meta property="article:modified_time" content="2026-03-27T16:43:54.138Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
   
@@ -150,164 +154,547 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
+            <article id="post-synchonrized跟reentronlock的区别" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
   
-  
-    
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2026" class="archive-year">2026</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/05/Jwtutils/" class="archive-article-date">
-  	<time datetime="2026-03-05T14:03:46.922Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-05</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/03/03/spring%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/" class="archive-article-date">
-  	<time datetime="2026-03-03T10:10:08.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/03/03/spring%E5%B8%B8%E8%A7%81%E6%A6%82%E5%BF%B5/">spring常见概念</a>
+    <h1 class="article-title" itemprop="name">
+      synchonrized跟reentronlock的区别
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/" class="archive-article-date">
-  	<time datetime="2026-02-28T14:17:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-02-28</time>
+        
+        <a href="/2026/03/28/synchonrized%E8%B7%9Freentronlock%E7%9A%84%E5%8C%BA%E5%88%AB/" class="archive-article-date">
+  	<time datetime="2026-03-27T16:43:28.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-03-28</time>
 </a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/02/28/%E5%B8%B8%E8%A7%81%E6%B3%A8%E9%87%8A/">常见注释</a>
-    </h1>
-  
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>这个问题是Java并发编程中的经典面试题。我来为你系统地梳理一下JUC中的锁体系，以及<code>synchronized</code>和<code>ReentrantLock</code>的核心区别与实现原理。</p>
+<hr>
+<h2 id="一、JUC中的锁分类"><a href="#一、JUC中的锁分类" class="headerlink" title="一、JUC中的锁分类"></a>一、JUC中的锁分类</h2><p>在<code>java.util.concurrent</code>（JUC）包下，锁可以按不同维度分类：</p>
+<h3 id="1-按接口-实现划分"><a href="#1-按接口-实现划分" class="headerlink" title="1. 按接口&#x2F;实现划分"></a>1. 按接口&#x2F;实现划分</h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>代表实现</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>悲观锁</strong></td>
+<td><code>synchronized</code>, <code>ReentrantLock</code></td>
+<td>假设并发冲突严重，先加锁再操作</td>
+</tr>
+<tr>
+<td><strong>乐观锁</strong></td>
+<td><code>AtomicInteger</code> (CAS), <code>StampedLock</code> (乐观读)</td>
+<td>假设冲突少，先操作再检测，失败则重试</td>
+</tr>
+<tr>
+<td><strong>独占锁</strong></td>
+<td><code>ReentrantLock</code>, <code>synchronized</code></td>
+<td>同一时刻只能一个线程持有</td>
+</tr>
+<tr>
+<td><strong>共享锁</strong></td>
+<td><code>ReentrantReadWriteLock</code> 的读锁, <code>Semaphore</code>, <code>CountDownLatch</code></td>
+<td>多个线程可同时持有</td>
+</tr>
+<tr>
+<td><strong>公平锁</strong></td>
+<td><code>ReentrantLock(true)</code></td>
+<td>按等待队列顺序获取锁</td>
+</tr>
+<tr>
+<td><strong>非公平锁</strong></td>
+<td><code>synchronized</code>, <code>ReentrantLock(false)</code></td>
+<td>允许插队，吞吐量更高</td>
+</tr>
+<tr>
+<td><strong>可重入锁</strong></td>
+<td><code>synchronized</code>, <code>ReentrantLock</code></td>
+<td>同一线程可重复获取同一把锁</td>
+</tr>
+<tr>
+<td><strong>可中断锁</strong></td>
+<td><code>ReentrantLock.lockInterruptibly()</code></td>
+<td>等待锁时可响应中断</td>
+</tr>
+<tr>
+<td><strong>读写锁</strong></td>
+<td><code>ReentrantReadWriteLock</code></td>
+<td>读读并发、读写互斥、写写互斥</td>
+</tr>
+<tr>
+<td><strong>邮戳锁</strong></td>
+<td><code>StampedLock</code></td>
+<td>JDK 1.8引入，支持乐观读，性能更好</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="二、synchronized-vs-ReentrantLock-核心区别"><a href="#二、synchronized-vs-ReentrantLock-核心区别" class="headerlink" title="二、synchronized vs ReentrantLock 核心区别"></a>二、synchronized vs ReentrantLock 核心区别</h2><table>
+<thead>
+<tr>
+<th>对比维度</th>
+<th>synchronized</th>
+<th>ReentrantLock</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>实现层级</strong></td>
+<td>JVM层面（monitor对象）</td>
+<td>JDK层面（AbstractQueuedSynchronizer - AQS）</td>
+</tr>
+<tr>
+<td><strong>锁获取方式</strong></td>
+<td>隐式自动获取&#x2F;释放</td>
+<td>显式调用 <code>lock()</code> &#x2F; <code>unlock()</code></td>
+</tr>
+<tr>
+<td><strong>灵活性</strong></td>
+<td>低，无法中断等待锁的线程</td>
+<td>高，支持 <code>tryLock()</code>、<code>lockInterruptibly()</code></td>
+</tr>
+<tr>
+<td><strong>公平性</strong></td>
+<td>非公平锁</td>
+<td>默认非公平，可构造公平锁</td>
+</tr>
+<tr>
+<td><strong>条件变量</strong></td>
+<td>每个对象只有一个 <code>wait/notify</code> 队列</td>
+<td>可创建多个 <code>Condition</code> 对象，精确唤醒</td>
+</tr>
+<tr>
+<td><strong>锁绑定</strong></td>
+<td>绑定在对象头上</td>
+<td>独立实例，可跨方法传递</td>
+</tr>
+<tr>
+<td><strong>性能</strong></td>
+<td>早期较差，JDK 1.6后优化（锁升级），与现代ReentrantLock相近</td>
+<td>高，尤其在复杂场景下</td>
+</tr>
+<tr>
+<td><strong>可重入性</strong></td>
+<td>✅ 支持</td>
+<td>✅ 支持</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="三、实现方式深入"><a href="#三、实现方式深入" class="headerlink" title="三、实现方式深入"></a>三、实现方式深入</h2><h3 id="1-synchronized-实现原理"><a href="#1-synchronized-实现原理" class="headerlink" title="1. synchronized 实现原理"></a>1. synchronized 实现原理</h3><p>synchronized 的底层依赖于 <strong>JVM 的 monitor 机制</strong>，通过对象头中的 Mark Word 实现锁状态记录。</p>
+<p><strong>锁升级过程（JDK 1.6优化后）</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">无锁 → 偏向锁 → 轻量级锁 → 重量级锁</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
-          
-          
+<ul>
+<li><strong>偏向锁</strong>：Mark Word 记录线程ID，消除无竞争时的同步开销</li>
+<li><strong>轻量级锁</strong>：CAS 操作尝试获取锁，失败则自旋</li>
+<li><strong>重量级锁</strong>：竞争激烈时，线程阻塞，依赖操作系统 mutex</li>
+</ul>
+<p><strong>字节码层面</strong>：</p>
+<ul>
+<li>同步方法：<code>ACC_SYNCHRONIZED</code> 标志位</li>
+<li>同步代码块：<code>monitorenter</code> &#x2F; <code>monitorexit</code> 指令</li>
+</ul>
+<h3 id="2-ReentrantLock-实现原理"><a href="#2-ReentrantLock-实现原理" class="headerlink" title="2. ReentrantLock 实现原理"></a>2. ReentrantLock 实现原理</h3><p>ReentrantLock 基于 <strong>AQS（AbstractQueuedSynchronizer）</strong> 实现。</p>
+<p><strong>AQS 核心结构</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// AQS 内部维护</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="type">int</span> state;          <span class="comment">// 同步状态，0表示未锁，&gt;0表示重入次数</span></span><br><span class="line">Node head, tail;             <span class="comment">// CLH 队列变种，管理等待线程</span></span><br></pre></td></tr></table></figure>
 
+<p><strong>非公平锁获取流程</strong>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">lock</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 1. 先尝试一次CAS抢锁</span></span><br><span class="line">    <span class="keyword">if</span> (compareAndSetState(<span class="number">0</span>, <span class="number">1</span>))</span><br><span class="line">        setExclusiveOwnerThread(Thread.currentThread());</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        acquire(<span class="number">1</span>);  <span class="comment">// 2. 失败进入AQS流程</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// AQS.acquire()</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">acquire</span><span class="params">(<span class="type">int</span> arg)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!tryAcquire(arg) &amp;&amp;          <span class="comment">// 再次尝试获取锁</span></span><br><span class="line">        acquireQueued(addWaiter(Node.EXCLUSIVE), arg)) <span class="comment">// 加入队列并阻塞</span></span><br><span class="line">        selfInterrupt();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>公平锁 vs 非公平锁</strong>：</p>
+<ul>
+<li>公平锁：<code>tryAcquire</code> 时会检查队列中是否有等待线程（<code>hasQueuedPredecessors()</code>）</li>
+<li>非公平锁：直接尝试 CAS，不检查队列</li>
+</ul>
+<hr>
+<h2 id="四、使用场景选择"><a href="#四、使用场景选择" class="headerlink" title="四、使用场景选择"></a>四、使用场景选择</h2><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>推荐</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>简单同步，无复杂需求</td>
+<td><code>synchronized</code>（代码简洁，JVM自动优化）</td>
+</tr>
+<tr>
+<td>需要尝试锁（<code>tryLock</code>）</td>
+<td><code>ReentrantLock</code></td>
+</tr>
+<tr>
+<td>需要可中断锁</td>
+<td><code>ReentrantLock.lockInterruptibly()</code></td>
+</tr>
+<tr>
+<td>需要多条件精确唤醒</td>
+<td><code>ReentrantLock</code> + <code>Condition</code></td>
+</tr>
+<tr>
+<td>读多写少</td>
+<td><code>ReentrantReadWriteLock</code> 或 <code>StampedLock</code></td>
+</tr>
+<tr>
+<td>高并发场景下追求极致性能</td>
+<td><code>StampedLock</code>（乐观读模式）</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="五、代码示例对比"><a href="#五、代码示例对比" class="headerlink" title="五、代码示例对比"></a>五、代码示例对比</h2><h3 id="synchronized-使用"><a href="#synchronized-使用" class="headerlink" title="synchronized 使用"></a>synchronized 使用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">syncMethod</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="comment">// 方法级同步</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">syncBlock</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">synchronized</span> (<span class="built_in">this</span>) &#123;</span><br><span class="line">        <span class="comment">// 代码块同步</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="ReentrantLock-使用"><a href="#ReentrantLock-使用" class="headerlink" title="ReentrantLock 使用"></a>ReentrantLock 使用</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="type">ReentrantLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ReentrantLock</span>(<span class="literal">true</span>); <span class="comment">// 公平锁</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="type">Condition</span> <span class="variable">condition</span> <span class="operator">=</span> lock.newCondition();</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">doSomething</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException &#123;</span><br><span class="line">    lock.lockInterruptibly(); <span class="comment">// 可中断获取</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="comment">// 业务逻辑</span></span><br><span class="line">        condition.await();     <span class="comment">// 释放锁并等待</span></span><br><span class="line">        condition.signal();    <span class="comment">// 唤醒特定条件队列的线程</span></span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        lock.unlock();         <span class="comment">// 必须手动释放</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="六、总结"><a href="#六、总结" class="headerlink" title="六、总结"></a>六、总结</h2><ol>
+<li><strong>synchronized</strong> 是 JVM 内置锁，使用简单，经过锁升级优化后性能已经不差，适合大多数简单场景</li>
+<li><strong>ReentrantLock</strong> 是 API 层面的锁，提供了更灵活的锁操作，适合需要高级并发控制的场景</li>
+<li>两者都是 <strong>可重入、独占锁</strong>，核心区别在于 <strong>灵活性、公平性选择、条件变量支持</strong></li>
+<li>理解底层实现：synchronized 依赖对象头 + monitor，ReentrantLock 依赖 AQS + CAS + CLH 队列</li>
+</ol>
+<p>如果你还想深入了解某个具体点，比如 AQS 的源码实现细节，或者 StampedLock 的乐观读模式，我可以继续展开说明。</p>
+<p>好的，我用一个生活中的场景来帮你形象理解这些锁的区别和原理。</p>
+<hr>
+<h2 id="场景：图书馆的“热门参考书”"><a href="#场景：图书馆的“热门参考书”" class="headerlink" title="场景：图书馆的“热门参考书”"></a>场景：图书馆的“热门参考书”</h2><p>假设图书馆里有一本<strong>非常热门的参考书</strong>（共享资源），只能一个人借阅（独占锁）。现在有很多学生（线程）都想看这本书。</p>
+<hr>
+<h3 id="一、synchronized-→-传统的“借书登记本”"><a href="#一、synchronized-→-传统的“借书登记本”" class="headerlink" title="一、synchronized → 传统的“借书登记本”"></a>一、synchronized → 传统的“借书登记本”</h3><p>图书馆用一本<strong>借书登记本</strong>（对象头&#x2F;Mark Word）来管理这本书。规则很简单：</p>
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>synchronized 的对应</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>没人借</td>
+<td>登记本上写着“可借” → 无锁状态</td>
+</tr>
+<tr>
+<td>第一个学生借书</td>
+<td>在登记本上写自己的名字 → 偏向锁</td>
+</tr>
+<tr>
+<td>又来个学生，但第一个还没还</td>
+<td>第一个学生名字还在，新学生尝试轻量级借阅（自旋等待），如果很快就还了，就不用惊动管理员</td>
+</tr>
+<tr>
+<td>竞争激烈，很多人抢</td>
+<td>管理员（操作系统）介入，把抢不到的学生挂起（重量级锁）</td>
+</tr>
+</tbody></table>
+<p><strong>特点</strong>：</p>
+<ul>
+<li>学生只管借，不用记得还？不，自动还（JVM自动释放）</li>
+<li>规则死板：只能等，不能中途放弃</li>
+<li>只有一个“等待通知板”：所有没借到的学生都在一个地方等，管理员只能喊“书还了！”（<code>notifyAll</code>），所有人被唤醒抢，容易造成“惊群效应”</li>
+</ul>
+<hr>
+<h3 id="二、ReentrantLock-→-现代化的“智能借阅系统”"><a href="#二、ReentrantLock-→-现代化的“智能借阅系统”" class="headerlink" title="二、ReentrantLock → 现代化的“智能借阅系统”"></a>二、ReentrantLock → 现代化的“智能借阅系统”</h3><p>图书馆升级了系统，有<strong>自助借阅机</strong>（AQS），提供更多功能：</p>
+<table>
+<thead>
+<tr>
+<th>ReentrantLock 特性</th>
+<th>生活化解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>显式借&#x2F;还</strong>（lock&#x2F;unlock）</td>
+<td>学生必须主动刷校园卡借书，主动刷卡还书（手动操作）</td>
+</tr>
+<tr>
+<td><strong>可重入</strong></td>
+<td>同一个学生借了书，中途出去吃饭，回来可以再刷一次卡直接进去看，不需要重新排队（同一线程可重复获取锁）</td>
+</tr>
+<tr>
+<td><strong>tryLock</strong></td>
+<td>“我先看看能不能借到，借不到我就先去吃饭，不傻等” → 非阻塞尝试</td>
+</tr>
+<tr>
+<td><strong>lockInterruptibly</strong></td>
+<td>借书时设定“如果10分钟内借不到就放弃，去上课”（可响应中断）</td>
+</tr>
+<tr>
+<td><strong>公平锁</strong></td>
+<td>按到图书馆的先后顺序排队借书，先来后到</td>
+</tr>
+<tr>
+<td><strong>非公平锁</strong></td>
+<td>新来的学生可以“插队”，如果书刚好还了，直接抢，不用排到队尾（提高吞吐量）</td>
+</tr>
+<tr>
+<td><strong>多个Condition</strong></td>
+<td>图书馆有多个<strong>不同的通知板</strong>：<br>• 一个板子贴“《Java编程思想》还书通知”<br>• 另一个板子贴“《并发编程实战》还书通知”<br>可以精准叫醒特定等待的人</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="三、AQS（AbstractQueuedSynchronizer）→-自助借阅机的内部机制"><a href="#三、AQS（AbstractQueuedSynchronizer）→-自助借阅机的内部机制" class="headerlink" title="三、AQS（AbstractQueuedSynchronizer）→ 自助借阅机的内部机制"></a>三、AQS（AbstractQueuedSynchronizer）→ 自助借阅机的内部机制</h3><p>自助借阅机内部有一个<strong>排队叫号系统</strong>（AQS的CLH队列）：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[学生A:正在借阅] ← [学生B:排队中] ← [学生C:排队中] ← [学生D:排队中]</span><br><span class="line">     ↑</span><br><span class="line">  当前持有锁</span><br></pre></td></tr></table></figure>
+
+<p><strong>AQS核心三要素</strong>：</p>
+<ol>
+<li><p><strong>状态标识</strong>（state）：屏幕上显示“当前借阅人数：0或1或2…”</p>
+<ul>
+<li>state&#x3D;0 → 无人借书</li>
+<li>state&#x3D;1 → 1人借书（未重入）</li>
+<li>state&#x3D;2 → 同一个学生重入了一次（比如出去吃饭回来又刷了一次卡）</li>
+</ul>
+</li>
+<li><p><strong>排队队列</strong>（CLH队列）：自助机打印的排队小票，按顺序叫号</p>
+</li>
+<li><p><strong>CAS操作</strong>：多个学生同时刷卡借书时，自助机内部用“原子操作”确保只有一个人能成功修改state</p>
+</li>
+</ol>
+<hr>
+<h3 id="四、ReentrantReadWriteLock-→-图书馆的“阅览室规则”"><a href="#四、ReentrantReadWriteLock-→-图书馆的“阅览室规则”" class="headerlink" title="四、ReentrantReadWriteLock → 图书馆的“阅览室规则”"></a>四、ReentrantReadWriteLock → 图书馆的“阅览室规则”</h3><p>图书馆把书分为两种使用方式：</p>
+<table>
+<thead>
+<tr>
+<th>锁类型</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>读锁</strong>（共享锁）</td>
+<td>很多学生可以在<strong>阅览室</strong>里同时看这本书（但不能带出去），大家互不干扰 → 读读并发</td>
+</tr>
+<tr>
+<td><strong>写锁</strong>（独占锁）</td>
+<td>谁要<strong>借出</strong>这本书（修改内容），必须独占，其他人既不能借出也不能在阅览室看 → 读写互斥、写写互斥</td>
+</tr>
+</tbody></table>
+<p><strong>现实案例</strong>：</p>
+<ul>
+<li>上午10点，10个学生在阅览室同时看书（10个读锁并发）</li>
+<li>突然有学生要借走书做笔记（申请写锁），必须等阅览室所有人都看完还回来，才能独占借走</li>
+</ul>
+<hr>
+<h3 id="五、StampedLock-→-图书馆的“诚信借阅模式”"><a href="#五、StampedLock-→-图书馆的“诚信借阅模式”" class="headerlink" title="五、StampedLock → 图书馆的“诚信借阅模式”"></a>五、StampedLock → 图书馆的“诚信借阅模式”</h3><p>StampedLock是更高级的借阅系统，增加了<strong>乐观读</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>模式</th>
+<th>解释</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>乐观读</strong>（optimistic read）</td>
+<td>学生不刷卡直接进阅览室看书，相信没人会借走书。看完后出来核对一下：<br>• 如果期间没人借走 → 成功，效率极高<br>• 如果期间被借走了 → 这次阅读无效，升级成正式读锁重读</td>
+</tr>
+<tr>
+<td><strong>悲观读</strong>（readLock）</td>
+<td>和上面一样，正式刷卡进入阅览室</td>
+</tr>
+<tr>
+<td><strong>写锁</strong>（writeLock）</td>
+<td>独占借出</td>
+</tr>
+</tbody></table>
+<p><strong>生活场景</strong>：</p>
+<blockquote>
+<p>你在阅览室看一本书，没有登记（乐观读），相信暂时没人会借走。看了20分钟后，去柜台问：“这本书这段时间有人借走过吗？”<br>管理员说：“没有” → 恭喜，你白嫖了20分钟阅读时间，效率拉满<br>管理员说：“有人借走过又还了” → 那你看的内容可能旧了，重新正式登记再看</p>
+</blockquote>
+<p>这就是为什么 StampedLock 在读多写少的场景下性能最好——大部分时间连读锁的获取开销都省了。</p>
+<hr>
+<h3 id="六、总结成一张生活对照表"><a href="#六、总结成一张生活对照表" class="headerlink" title="六、总结成一张生活对照表"></a>六、总结成一张生活对照表</h3><table>
+<thead>
+<tr>
+<th>锁概念</th>
+<th>图书馆场景比喻</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>共享资源</td>
+<td>那本热门参考书</td>
+</tr>
+<tr>
+<td>线程</td>
+<td>学生</td>
+</tr>
+<tr>
+<td>获取锁</td>
+<td>借到书</td>
+</tr>
+<tr>
+<td>释放锁</td>
+<td>还书</td>
+</tr>
+<tr>
+<td>阻塞</td>
+<td>在门口排队等</td>
+</tr>
+<tr>
+<td>可重入</td>
+<td>同一个学生中途出去再进来，不用重新排队</td>
+</tr>
+<tr>
+<td>公平锁</td>
+<td>按到馆顺序排队</td>
+</tr>
+<tr>
+<td>非公平锁</td>
+<td>新来的可以插队抢</td>
+</tr>
+<tr>
+<td>Condition</td>
+<td>不同的“还书通知板”，精准叫醒</td>
+</tr>
+<tr>
+<td>AQS队列</td>
+<td>自助机打印的排队小票</td>
+</tr>
+<tr>
+<td>读写锁</td>
+<td>阅览室看 vs 借出</td>
+</tr>
+<tr>
+<td>乐观读</td>
+<td>不登记直接进阅览室看，看完核对</td>
+</tr>
+</tbody></table>
+<hr>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://example.com/2026/03/28/synchonrized%E8%B7%9Freentronlock%E7%9A%84%E5%8C%BA%E5%88%AB/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2026/02/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0AOP/" class="archive-article-date">
-  	<time datetime="2026-02-27T14:13:41.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2026-02-27</time>
-</a>
+<nav id="article-nav">
+  
+    <a href="/2026/03/28/SpringBean%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          SpringBean线程安全
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2026/03/27/String-StringBuild-StringBuffer%E5%8C%BA%E5%88%AB/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">String StringBuild StringBuffer区别</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
+
+
+
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2026/02/27/%E6%88%91%E7%9A%84%E7%AC%AC%E4%B8%80%E7%AF%87%E6%96%87%E7%AB%A0AOP/">我的第一篇文章AOP</a>
-    </h1>
+  
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-      
-        </div></section>
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2025" class="archive-year">2025</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2025/11/18/hello-world/" class="archive-article-date">
-  	<time datetime="2025-11-17T17:04:37.214Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2025-11-18</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2025/11/18/hello-world/">Hello World</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span>
-    </nav>
   
 
 
@@ -331,8 +718,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
